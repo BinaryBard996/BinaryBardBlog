@@ -1,2 +1,2 @@
 # BinaryBardBlog
-Binary Bard Blog
+Personal Blog
