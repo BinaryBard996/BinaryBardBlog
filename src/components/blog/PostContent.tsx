@@ -68,10 +68,12 @@ export function PostContent({ content }: PostContentProps) {
             )
           },
           img({ src, alt, ...props }) {
+            const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '')
+            const resolvedSrc = src && src.startsWith('/') ? `${baseUrl}${src}` : src
             return (
               <figure className="my-6">
                 <img
-                  src={src}
+                  src={resolvedSrc}
                   alt={alt}
                   className="rounded-xl shadow-lg mx-auto"
                   loading="lazy"

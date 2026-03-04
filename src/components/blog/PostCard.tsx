@@ -21,7 +21,7 @@ export function PostCard({ post, index = 0 }: PostCardProps) {
         {post.cover && (
           <div className="sm:w-48 sm:h-32 flex-shrink-0 rounded-lg overflow-hidden">
             <img
-              src={post.cover}
+              src={post.cover?.startsWith('/') ? `${import.meta.env.BASE_URL.replace(/\/$/, '')}${post.cover}` : post.cover}
               alt={post.title}
               className="w-full h-40 sm:h-full object-cover group-hover:scale-105 transition-transform duration-500"
               loading="lazy"

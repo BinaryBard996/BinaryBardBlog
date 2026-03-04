@@ -24,7 +24,7 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
           >
             {post.cover && (
               <img
-                src={post.cover}
+                src={post.cover?.startsWith('/') ? `${import.meta.env.BASE_URL.replace(/\/$/, '')}${post.cover}` : post.cover}
                 alt={post.title}
                 className="w-full h-32 object-cover rounded-lg mb-3"
                 loading="lazy"
