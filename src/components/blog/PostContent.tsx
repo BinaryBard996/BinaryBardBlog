@@ -16,19 +16,41 @@ export function PostContent({ content }: PostContentProps) {
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeHighlight, rehypeSlug]}
         components={{
-          code({ className, children, ...props }) {
-            const isInline = !className
-            if (isInline) {
+          pre({ children, ...props }) {
+            // children is the <code> element rendered by rehype-highlight
+            const codeElement = children as React.ReactElement
+            if (
+              codeElement &&
+              typeof codeElement === "object" &&
+              "props" in codeElement
+            ) {
+              const codeProps = codeElement.props as {
+                className?: string
+                children?: React.ReactNode
+              }
+              const className = codeProps.className || ""
               return (
-                <code className="bg-slate-100 dark:bg-slate-800 text-brand-600 dark:text-brand-400 px-1.5 py-0.5 rounded-md text-sm font-mono" {...props}>
+                <CodeBlock className={className}>
+                  {codeProps.children}
+                </CodeBlock>
+              )
+            }
+            return <pre {...props}>{children}</pre>
+          },
+          code({ className, children, ...props }) {
+            // Only handle inline code here; block code is handled by `pre` above
+            if (className) {
+              // This is inside a <pre> — let rehype-highlight output pass through
+              return (
+                <code className={className} {...props}>
                   {children}
                 </code>
               )
             }
             return (
-              <CodeBlock className={className}>
-                {String(children).replace(/\n$/, "")}
-              </CodeBlock>
+              <code className="bg-slate-100 dark:bg-slate-800 text-brand-600 dark:text-brand-400 px-1.5 py-0.5 rounded-md text-sm font-mono" {...props}>
+                {children}
+              </code>
             )
           },
           a({ href, children, ...props }) {

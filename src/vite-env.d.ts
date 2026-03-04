@@ -6,6 +6,12 @@ declare module "virtual:blog-posts" {
   export default posts
 }
 
+declare module "virtual:blog-posts-full" {
+  import type { BlogPost } from "@/types/blog"
+  const postsMap: Record<string, BlogPost>
+  export default postsMap
+}
+
 declare module "virtual:search-index" {
   interface SearchEntry {
     slug: string

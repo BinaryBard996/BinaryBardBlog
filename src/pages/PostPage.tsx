@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import { useParams, Link } from "react-router-dom"
 import { Calendar, Clock, ArrowLeft, Tag } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
@@ -12,40 +12,15 @@ import { getRelatedPosts } from "@/lib/posts"
 import { formatDate } from "@/lib/utils"
 import type { BlogPost } from "@/types/blog"
 import allPosts from "virtual:blog-posts"
+import allPostsFull from "virtual:blog-posts-full"
 
 export function PostPage() {
   const { slug } = useParams<{ slug: string }>()
-  const [post, setPost] = useState<BlogPost | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const post: BlogPost | null = slug ? allPostsFull[slug] ?? null : null
 
   useEffect(() => {
-    if (!slug) return
-    setIsLoading(true)
-
-    import(/* @vite-ignore */ `virtual:blog-post:${slug}`)
-      .then((mod) => {
-        setPost(mod.default)
-        setIsLoading(false)
-      })
-      .catch((err) => {
-        console.error("Failed to load post:", err)
-        setIsLoading(false)
-      })
-
     window.scrollTo(0, 0)
   }, [slug])
-
-  if (isLoading) {
-    return (
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-20">
-        <div className="animate-pulse space-y-4">
-          <div className="h-8 bg-slate-200 dark:bg-slate-800 rounded w-3/4" />
-          <div className="h-4 bg-slate-200 dark:bg-slate-800 rounded w-1/2" />
-          <div className="h-64 bg-slate-200 dark:bg-slate-800 rounded mt-8" />
-        </div>
-      </div>
-    )
-  }
 
   if (!post) {
     return (

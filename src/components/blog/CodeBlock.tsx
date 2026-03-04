@@ -1,17 +1,29 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, type ReactNode } from "react"
 import { Check, Copy } from "lucide-react"
 
 interface CodeBlockProps {
-  children: string
+  children: ReactNode
   className?: string
+}
+
+function extractText(node: ReactNode): string {
+  if (typeof node === "string") return node
+  if (typeof node === "number") return String(node)
+  if (node == null || typeof node === "boolean") return ""
+  if (Array.isArray(node)) return node.map(extractText).join("")
+  if (typeof node === "object" && "props" in node) {
+    return extractText((node as React.ReactElement).props.children)
+  }
+  return ""
 }
 
 export function CodeBlock({ children, className }: CodeBlockProps) {
   const [copied, setCopied] = useState(false)
-  const language = className?.replace("language-", "") || "text"
+  const language = className?.replace(/^.*language-/, "").replace(/\s.*$/, "") || "text"
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(children)
+    const text = extractText(children)
+    await navigator.clipboard.writeText(text)
     setCopied(true)
   }
 
@@ -44,8 +56,8 @@ export function CodeBlock({ children, className }: CodeBlockProps) {
           )}
         </button>
       </div>
-      {/* Code content rendered by react-markdown + rehype-highlight */}
-      <pre className={className}>
+      {/* Code content already highlighted by rehype-highlight */}
+      <pre className="!mt-0 !rounded-t-none">
         <code className={className}>{children}</code>
       </pre>
     </div>
