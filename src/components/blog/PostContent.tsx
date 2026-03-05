@@ -3,6 +3,7 @@ import remarkGfm from "remark-gfm"
 import rehypeHighlight from "rehype-highlight"
 import rehypeSlug from "rehype-slug"
 import { CodeBlock } from "./CodeBlock"
+import { GitHubRepoCard } from "./GitHubRepoCard"
 import "highlight.js/styles/atom-one-dark.css"
 
 interface PostContentProps {
@@ -54,6 +55,18 @@ export function PostContent({ content }: PostContentProps) {
             )
           },
           a({ href, children, ...props }) {
+            // Detect github-card pattern: [github-card:owner/repo](url)
+            const childText = typeof children === "string" ? children : ""
+            const githubCardMatch = childText.match(/^github-card:(.+?)\/(.+)$/)
+            if (githubCardMatch && href) {
+              return (
+                <GitHubRepoCard
+                  owner={githubCardMatch[1]}
+                  repo={githubCardMatch[2]}
+                  href={href}
+                />
+              )
+            }
             const isExternal = href?.startsWith("http")
             return (
               <a

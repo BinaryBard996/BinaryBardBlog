@@ -32,6 +32,8 @@ tags: ["UE", "GAS", "GameplayEffect", "插件开发", "自动化工具", "Excel"
 
 所幸AI另一面也是一个极为强大的工具，如果无法战胜它，那就索性躺平并享受吧。在AI大人的帮助下，我才得以快速学习和开发我完全不熟悉的领域，并在极短的时间内就完成了这个插件。AbilityEditorHelper插件几乎所有的代码都是 claude AI 写的，我负责告诉他如何迭代和进行优化。下面是插件的代码链接，感兴趣的可以自己去下载并体验，不过使用之前需要对unreal python安装相关的依赖库。
 
+[github-card:BinaryBard996/AbilityHelperSample](https://github.com/BinaryBard996/AbilityHelperSample)
+
 ## 二、AbilityEditorHelper 插件概述
 
 **AbilityEditorHelper** 是一个基于 Schema（数据说明） 驱动的 Unreal Engine GAS 配置自动化工具。它的核心理念很简单：**让策划能够使用他们最熟悉的 Excel 表格来配置 GameplayEffect 和 GameplayAbility。**
