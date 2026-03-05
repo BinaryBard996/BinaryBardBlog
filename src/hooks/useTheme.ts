@@ -1,39 +1,40 @@
 import { useState, useEffect, useCallback } from "react"
 
-type Theme = "light" | "dark"
+type Theme = "dark" | "light" | "system"
+
+function getSystemTheme(): "dark" | "light" {
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+}
+
+function applyTheme(theme: Theme) {
+  const resolved = theme === "system" ? getSystemTheme() : theme
+  document.documentElement.classList.toggle("dark", resolved === "dark")
+}
 
 export function useTheme() {
-  const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof window === "undefined") return "light"
+  const [theme, setThemeState] = useState<Theme>(() => {
     const stored = localStorage.getItem("theme") as Theme | null
-    if (stored) return stored
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+    return stored || "dark"
   })
 
-  useEffect(() => {
-    const root = document.documentElement
-    if (theme === "dark") {
-      root.classList.add("dark")
-    } else {
-      root.classList.remove("dark")
-    }
-    localStorage.setItem("theme", theme)
-  }, [theme])
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)")
-    const handler = (e: MediaQueryListEvent) => {
-      if (!localStorage.getItem("theme")) {
-        setTheme(e.matches ? "dark" : "light")
-      }
-    }
-    mediaQuery.addEventListener("change", handler)
-    return () => mediaQuery.removeEventListener("change", handler)
+  const setTheme = useCallback((t: Theme) => {
+    setThemeState(t)
+    localStorage.setItem("theme", t)
+    applyTheme(t)
   }, [])
 
   const toggleTheme = useCallback(() => {
-    setTheme((prev) => (prev === "light" ? "dark" : "light"))
-  }, [])
+    setTheme(theme === "dark" ? "light" : "dark")
+  }, [theme, setTheme])
 
-  return { theme, toggleTheme, setTheme }
+  useEffect(() => {
+    applyTheme(theme)
+    if (theme !== "system") return
+    const mq = window.matchMedia("(prefers-color-scheme: dark)")
+    const handler = () => applyTheme("system")
+    mq.addEventListener("change", handler)
+    return () => mq.removeEventListener("change", handler)
+  }, [theme])
+
+  return { theme, setTheme, toggleTheme }
 }

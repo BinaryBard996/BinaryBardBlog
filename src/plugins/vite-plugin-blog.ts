@@ -48,6 +48,7 @@ function loadAllPosts(): PostData[] {
       category: data.category || "未分类",
       tags: data.tags || [],
       cover: data.cover || undefined,
+      pinned: data.pinned === true ? true : undefined,
       readingTime: calculateReadingTime(content),
       content,
     })

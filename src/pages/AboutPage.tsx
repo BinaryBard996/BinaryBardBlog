@@ -1,143 +1,228 @@
-import { Github, Mail, Twitter, Globe, Gamepad2, Server, Wrench, Sparkles } from "lucide-react"
-import { siteConfig } from "@/types/blog"
+import { motion, useInView } from "framer-motion"
+import { useRef } from "react"
+import { Github, Mail, Globe, Gamepad2, Server, Wrench, Sparkles } from "lucide-react"
+import { Button } from "../components/ui/button"
+import { AnimatedPage } from "../components/common/AnimatedPage"
+import { ScrollReveal } from "../components/common/ScrollReveal"
+import { siteConfig, socialLinks, skills, projects, timeline } from "../config/site"
 
-const skills = [
-  {
-    category: "游戏引擎",
-    icon: Gamepad2,
-    color: "text-anime-gold",
-    items: ["Unreal Engine 5", "Blueprint", "GAS", "Slate UI", "PCG", "Niagara"],
-  },
-  {
-    category: "编程语言",
-    icon: Server,
-    color: "text-anime-sky",
-    items: ["C++", "Python", "TypeScript", "Rust", "Lua", "HLSL"],
-  },
-  {
-    category: "工具链",
-    icon: Wrench,
-    color: "text-anime-gold-light",
-    items: ["Git", "Perforce", "Docker", "CI/CD", "Houdini", "Excel Automation"],
-  },
-  {
-    category: "兴趣方向",
-    icon: Sparkles,
-    color: "text-anime-lavender",
-    items: ["插件开发", "工作流自动化", "技术美术", "性能优化", "工具设计", "技术写作"],
-  },
-]
+function SkillBar({ name, level, delay }: { name: string; level: number; delay: number }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const isInView = useInView(ref, { once: true, margin: "-50px" })
 
-const timeline = [
-  { year: "2026", title: "BinaryBard 博客上线", desc: "搭建个人技术博客，开启系统化技术分享之旅", color: "text-anime-gold" },
-  { year: "2025", title: "UE GAS 工具链开发", desc: "开发 AbilityEditorHelper 等 Schema 驱动的自动化工具", color: "text-anime-sky" },
-  { year: "2024", title: "深入 Unreal Engine", desc: "专注 GAS 框架研究，构建游戏能力系统", color: "text-anime-gold-light" },
-  { year: "2023", title: "游戏开发之旅", desc: "系统学习游戏开发，参与多个项目的工具链建设", color: "text-anime-lavender" },
-]
+  return (
+    <div ref={ref} className="space-y-1.5">
+      <div className="flex items-center justify-between text-sm">
+        <span className="text-foreground font-medium">{name}</span>
+        <span className="text-anime-gold text-xs">{level}%</span>
+      </div>
+      <div className="h-2 rounded-full bg-secondary overflow-hidden">
+        <motion.div
+          className="h-full rounded-full bg-gradient-to-r from-anime-gold to-anime-sky"
+          initial={{ width: 0 }}
+          animate={isInView ? { width: `${level}%` } : { width: 0 }}
+          transition={{ type: "spring", stiffness: 50, damping: 15, delay }}
+        />
+      </div>
+    </div>
+  )
+}
+
+const categoryIcons: Record<string, typeof Gamepad2> = {
+  "游戏引擎": Gamepad2,
+  "编程语言": Server,
+  "游戏框架": Sparkles,
+  "前端框架": Globe,
+  "图形渲染": Sparkles,
+  "开发工具": Wrench,
+}
 
 export function AboutPage() {
+  const skillsByCategory = skills.reduce((acc, skill) => {
+    if (!acc[skill.category]) acc[skill.category] = []
+    acc[skill.category].push(skill)
+    return acc
+  }, {} as Record<string, typeof skills>)
+
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
-      {/* Profile */}
-      <div className="flex flex-col sm:flex-row items-center sm:items-start gap-8 mb-16">
-        <div className="relative flex-shrink-0">
-          <div className="w-28 h-28 rounded-full bg-gradient-to-br from-anime-gold/20 to-anime-lavender/20 border-3 border-anime-gold/40 flex items-center justify-center text-anime-gold text-3xl font-bold shadow-anime-gold">
-            BB
+    <AnimatedPage>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
+        {/* Profile */}
+        <ScrollReveal>
+          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-8 mb-16">
+            <div className="relative flex-shrink-0">
+              <div className="w-28 h-28 rounded-full bg-gradient-to-br from-anime-gold/20 to-anime-lavender/20 border-[3px] border-anime-gold/40 flex items-center justify-center text-anime-gold text-3xl font-bold shadow-glow-gold">
+                BB
+              </div>
+              <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-anime-emerald border-2 border-background rounded-full flex items-center justify-center">
+                <span className="text-[8px] text-background font-bold">ON</span>
+              </div>
+            </div>
+            <div className="text-center sm:text-left">
+              <h1 className="text-3xl font-black text-foreground mb-2 font-heading">
+                {siteConfig.author}
+              </h1>
+              <p className="text-lg text-anime-gold font-medium mb-3">
+                Game Developer & Tool Creator
+              </p>
+              <p className="text-muted-foreground leading-relaxed max-w-xl mb-4">
+                一名热爱游戏开发的创作者。专注于 Unreal Engine 开发与工具链建设，
+                致力于用自动化工具提升团队开发效率。喜欢用代码构建有趣的世界。
+              </p>
+              <div className="flex items-center gap-3 justify-center sm:justify-start">
+                {socialLinks.map(({ icon, href, label }) => {
+                  const iconMap: Record<string, typeof Github> = {
+                    Github, Mail, Globe,
+                  }
+                  const IconComp = iconMap[icon] || Globe
+                  return (
+                    <a
+                      key={label}
+                      href={href}
+                      target={href.startsWith("http") ? "_blank" : undefined}
+                      rel="noopener noreferrer"
+                      className="w-10 h-10 rounded-lg bg-secondary/50 border border-border flex items-center justify-center text-muted-foreground hover:text-anime-gold hover:border-anime-gold/30 transition-all cursor-pointer"
+                      title={label}
+                    >
+                      <IconComp className="w-4 h-4" />
+                    </a>
+                  )
+                })}
+              </div>
+            </div>
           </div>
-          <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-anime-emerald border-2 border-anime-dark rounded-full flex items-center justify-center">
-            <span className="text-[8px] text-anime-dark font-bold">ON</span>
+        </ScrollReveal>
+
+        {/* Skills */}
+        <section className="mb-16">
+          <ScrollReveal>
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-1 h-6 bg-gradient-to-b from-anime-gold to-anime-gold-dark rounded-full" />
+              <h2 className="text-2xl font-bold text-foreground font-heading">技能</h2>
+            </div>
+          </ScrollReveal>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {Object.entries(skillsByCategory).map(([category, catSkills], catIdx) => {
+              const Icon = categoryIcons[category] || Sparkles
+              return (
+                <ScrollReveal key={category} delay={catIdx * 0.1}>
+                  <div className="glass-panel rounded-xl p-5 hover:border-anime-gold/30 transition-all duration-300">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Icon className="w-5 h-5 text-anime-gold" />
+                      <h3 className="font-bold text-foreground">{category}</h3>
+                    </div>
+                    <div className="space-y-3">
+                      {catSkills.map((skill, idx) => (
+                        <SkillBar
+                          key={skill.name}
+                          name={skill.name}
+                          level={skill.level}
+                          delay={catIdx * 0.1 + idx * 0.05}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </ScrollReveal>
+              )
+            })}
           </div>
-        </div>
-        <div className="text-center sm:text-left">
-          <h1 className="text-3xl font-black text-[#e8e4dc] mb-2 font-serif">
-            {siteConfig.author}
-          </h1>
-          <p className="text-lg text-anime-gold font-medium mb-3 gold-text">
-            Game Developer & Tool Creator
-          </p>
-          <p className="text-[#9b97a0] leading-relaxed max-w-xl mb-4">
-            一名热爱游戏开发的创作者。专注于 Unreal Engine 开发与工具链建设，
-            致力于用自动化工具提升团队开发效率。喜欢用代码构建有趣的世界。
-          </p>
-          <div className="flex items-center gap-3 justify-center sm:justify-start">
-            {[
-              { icon: Github, href: siteConfig.github, label: "GitHub", hoverColor: "hover:text-anime-gold hover:border-anime-gold/30" },
-              { icon: Twitter, href: "#", label: "Twitter", hoverColor: "hover:text-anime-sky hover:border-anime-sky/30" },
-              { icon: Mail, href: `mailto:${siteConfig.email}`, label: "Email", hoverColor: "hover:text-anime-gold-light hover:border-anime-gold-light/30" },
-              { icon: Globe, href: siteConfig.url, label: "Website", hoverColor: "hover:text-anime-lavender hover:border-anime-lavender/30" },
-            ].map(({ icon: Icon, href, label, hoverColor }) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`w-10 h-10 rounded-lg anime-panel-light flex items-center justify-center text-[#6b6773] ${hoverColor} transition-all cursor-pointer`}
-                title={label}
-              >
-                <Icon className="w-4 h-4" />
-              </a>
+        </section>
+
+        {/* Projects */}
+        <section className="mb-16">
+          <ScrollReveal>
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-1 h-6 bg-gradient-to-b from-anime-sky to-anime-lavender rounded-full" />
+              <h2 className="text-2xl font-bold text-foreground font-heading">项目作品</h2>
+            </div>
+          </ScrollReveal>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {projects.map((project, idx) => (
+              <ScrollReveal key={project.title} delay={idx * 0.1}>
+                <div className="glass-panel rounded-xl overflow-hidden hover:-translate-y-1 hover:border-anime-gold/30 transition-all duration-300 group">
+                  {project.cover && (
+                    <div className="aspect-video overflow-hidden">
+                      <img
+                        src={`${import.meta.env.BASE_URL}${project.cover.replace(/^\//, "")}`}
+                        alt={project.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                      />
+                    </div>
+                  )}
+                  <div className="p-5">
+                    <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-anime-gold transition-colors">
+                      {project.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+                      {project.description}
+                    </p>
+                    <div className="flex flex-wrap gap-1.5 mb-4">
+                      {project.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-2 py-0.5 text-xs text-muted-foreground bg-secondary/80 border border-border rounded-full"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    {project.github && (
+                      <a href={project.github} target="_blank" rel="noopener noreferrer">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="border-border text-muted-foreground hover:text-anime-gold hover:border-anime-gold/30 cursor-pointer gap-1.5"
+                        >
+                          <Github className="w-3.5 h-3.5" />
+                          查看源码
+                        </Button>
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </ScrollReveal>
             ))}
           </div>
-        </div>
-      </div>
+        </section>
 
-      {/* Skills */}
-      <section className="mb-16">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-1 h-6 bg-gradient-to-b from-anime-gold to-anime-gold-dark rounded-full" />
-          <h2 className="text-2xl font-bold text-[#e8e4dc] font-serif">技术栈</h2>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {skills.map((group) => (
-            <div key={group.category} className="anime-panel p-5 anime-card overflow-hidden">
-              <div className="flex items-center gap-2 mb-3">
-                <group.icon className={`w-5 h-5 ${group.color}`} />
-                <h3 className="font-bold text-[#e8e4dc]">
-                  {group.category}
-                </h3>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {group.items.map((item) => (
-                  <span key={item} className="inline-flex items-center px-2.5 py-1 text-xs text-[#9b97a0] rounded-full bg-anime-dark-mid/80 border border-anime-gold/10">
-                    {item}
-                  </span>
-                ))}
-              </div>
+        {/* Timeline */}
+        <section>
+          <ScrollReveal>
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-1 h-6 bg-gradient-to-b from-anime-lavender to-anime-gold rounded-full" />
+              <h2 className="text-2xl font-bold text-foreground font-heading">成长历程</h2>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Timeline */}
-      <section>
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-1 h-6 bg-gradient-to-b from-anime-sky to-anime-lavender rounded-full" />
-          <h2 className="text-2xl font-bold text-[#e8e4dc] font-serif">成长历程</h2>
-        </div>
-        <div className="space-y-0">
-          {timeline.map((item, index) => (
-            <div key={item.year} className="flex gap-4">
-              <div className="flex flex-col items-center">
-                <div className={`w-10 h-10 rounded-lg anime-panel-light flex items-center justify-center ${item.color} text-xs font-bold flex-shrink-0`}>
-                  {item.year.slice(2)}
+          </ScrollReveal>
+          <div className="space-y-0">
+            {timeline.map((item, index) => (
+              <ScrollReveal key={item.year + item.title} delay={index * 0.1}>
+                <div className="flex gap-4">
+                  <div className="flex flex-col items-center">
+                    <div className="w-10 h-10 rounded-lg bg-secondary/50 border border-border flex items-center justify-center text-anime-gold text-xs font-bold flex-shrink-0">
+                      {item.year.slice(2)}
+                    </div>
+                    {index < timeline.length - 1 && (
+                      <div className="w-px flex-1 bg-gradient-to-b from-anime-gold/20 to-transparent my-2" />
+                    )}
+                  </div>
+                  <div className="pb-8">
+                    <span className="text-xs text-anime-gold tracking-wider font-medium">
+                      {item.year}
+                    </span>
+                    <h3 className="text-base font-bold text-foreground mt-0.5">
+                      {item.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {item.description}
+                    </p>
+                  </div>
                 </div>
-                {index < timeline.length - 1 && (
-                  <div className="w-px flex-1 bg-gradient-to-b from-anime-gold/20 to-transparent my-2" />
-                )}
-              </div>
-              <div className="pb-8">
-                <span className={`text-xs ${item.color} tracking-wider font-medium`}>{item.year}</span>
-                <h3 className="text-base font-bold text-[#e8e4dc] mt-0.5">
-                  {item.title}
-                </h3>
-                <p className="text-sm text-[#6b6773] mt-1">
-                  {item.desc}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-    </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </section>
+      </div>
+    </AnimatedPage>
   )
 }

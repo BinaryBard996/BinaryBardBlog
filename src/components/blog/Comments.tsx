@@ -1,99 +1,67 @@
 import { useEffect, useRef } from "react"
 
-interface CommentsProps {
-  slug: string
-}
-
 const GISCUS_REPO = "BinaryBard996/BinaryBardBlog"
-const GISCUS_REPO_ID = ""  // TODO: 前往 https://giscus.app 获取
+const GISCUS_REPO_ID = ""
 const GISCUS_CATEGORY = "Announcements"
-const GISCUS_CATEGORY_ID = ""  // TODO: 前往 https://giscus.app 获取
+const GISCUS_CATEGORY_ID = ""
+const isConfigured = GISCUS_REPO_ID !== "" && GISCUS_CATEGORY_ID !== ""
 
-const isGiscusConfigured = GISCUS_REPO_ID !== "" && GISCUS_CATEGORY_ID !== ""
-
-export function Comments({ slug }: CommentsProps) {
-  const containerRef = useRef<HTMLDivElement>(null)
+export function Comments({ slug }: { slug: string }) {
+  const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (!containerRef.current || !isGiscusConfigured) return
-
-    const isDark = document.documentElement.classList.contains("dark")
-
-    containerRef.current.innerHTML = ""
-
-    const script = document.createElement("script")
-    script.src = "https://giscus.app/client.js"
-    script.setAttribute("data-repo", GISCUS_REPO)
-    script.setAttribute("data-repo-id", GISCUS_REPO_ID)
-    script.setAttribute("data-category", GISCUS_CATEGORY)
-    script.setAttribute("data-category-id", GISCUS_CATEGORY_ID)
-    script.setAttribute("data-mapping", "pathname")
-    script.setAttribute("data-strict", "0")
-    script.setAttribute("data-reactions-enabled", "1")
-    script.setAttribute("data-emit-metadata", "0")
-    script.setAttribute("data-input-position", "top")
-    script.setAttribute("data-theme", isDark ? "dark_dimmed" : "light")
-    script.setAttribute("data-lang", "zh-CN")
-    script.setAttribute("data-loading", "lazy")
-    script.crossOrigin = "anonymous"
-    script.async = true
-
-    containerRef.current.appendChild(script)
+    if (!ref.current || !isConfigured) return
+    ref.current.innerHTML = ""
+    const s = document.createElement("script")
+    s.src = "https://giscus.app/client.js"
+    s.setAttribute("data-repo", GISCUS_REPO)
+    s.setAttribute("data-repo-id", GISCUS_REPO_ID)
+    s.setAttribute("data-category", GISCUS_CATEGORY)
+    s.setAttribute("data-category-id", GISCUS_CATEGORY_ID)
+    s.setAttribute("data-mapping", "pathname")
+    s.setAttribute("data-strict", "0")
+    s.setAttribute("data-reactions-enabled", "1")
+    s.setAttribute("data-emit-metadata", "0")
+    s.setAttribute("data-input-position", "top")
+    s.setAttribute("data-theme", document.documentElement.classList.contains("dark") ? "dark_dimmed" : "light")
+    s.setAttribute("data-lang", "zh-CN")
+    s.setAttribute("data-loading", "lazy")
+    s.crossOrigin = "anonymous"
+    s.async = true
+    ref.current.appendChild(s)
   }, [slug])
 
   useEffect(() => {
-    if (!isGiscusConfigured) return
-
-    const observer = new MutationObserver(() => {
+    if (!isConfigured) return
+    const obs = new MutationObserver(() => {
       const iframe = document.querySelector<HTMLIFrameElement>("iframe.giscus-frame")
       if (iframe) {
-        const isDark = document.documentElement.classList.contains("dark")
         iframe.contentWindow?.postMessage(
-          { giscus: { setConfig: { theme: isDark ? "dark_dimmed" : "light" } } },
+          { giscus: { setConfig: { theme: document.documentElement.classList.contains("dark") ? "dark_dimmed" : "light" } } },
           "https://giscus.app"
         )
       }
     })
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    })
-
-    return () => observer.disconnect()
+    obs.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
+    return () => obs.disconnect()
   }, [])
 
   return (
-    <div className="mt-12 pt-8 border-t border-anime-gold/10">
+    <div className="mt-12 pt-8 border-t border-border">
       <div className="flex items-center gap-3 mb-6">
         <div className="w-1 h-5 bg-gradient-to-b from-anime-lavender to-anime-sky rounded-full" />
-        <h3 className="text-xl font-bold text-[#e8e4dc] font-serif">评论区</h3>
+        <h3 className="text-xl font-bold text-foreground font-serif">评论区</h3>
       </div>
-      {!isGiscusConfigured ? (
-        <div className="text-sm text-[#9b97a0] anime-panel p-4">
-          <p>
-            评论系统尚未配置。请前往{" "}
-            <a
-              href="https://giscus.app"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-anime-sky hover:text-anime-gold underline"
-            >
-              Giscus 官网
-            </a>
-            {" "}获取仓库 ID 和分类 ID，然后更新{" "}
-            <code className="bg-anime-dark-mid px-1 py-0.5 rounded text-xs text-anime-gold-light">
-              src/components/blog/Comments.tsx
-            </code>
-            {" "}中的配置。
-          </p>
+      {!isConfigured ? (
+        <div className="text-sm text-muted-foreground glass-panel p-4">
+          评论系统尚未配置。请前往{" "}
+          <a href="https://giscus.app" target="_blank" rel="noopener noreferrer" className="text-anime-sky hover:text-anime-gold underline">Giscus</a>
+          {" "}获取配置后更新 <code className="text-anime-gold-light text-xs">Comments.tsx</code>。
         </div>
       ) : (
         <>
-          <p className="text-sm text-[#6b6773] mb-4">
-            评论系统基于 GitHub Discussions，请先登录 GitHub 账号。
-          </p>
-          <div ref={containerRef} />
+          <p className="text-sm text-muted-foreground mb-4">基于 GitHub Discussions，请先登录 GitHub。</p>
+          <div ref={ref} />
         </>
       )}
     </div>

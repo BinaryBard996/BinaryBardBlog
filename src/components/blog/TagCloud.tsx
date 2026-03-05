@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { Badge } from "@/components/ui/badge"
+import { Badge } from "../../components/ui/badge"
 
 interface TagCloudProps {
   tags: { name: string; count: number }[]
@@ -19,7 +19,7 @@ export function TagCloud({ tags }: TagCloudProps) {
           >
             <Badge
               variant="outline"
-              className="cursor-pointer hover:bg-brand-50 dark:hover:bg-brand-950/30 hover:border-brand-300 dark:hover:border-brand-700 hover:text-brand-600 dark:hover:text-brand-400 transition-all"
+              className="cursor-pointer border-border text-muted-foreground hover:bg-anime-gold/10 hover:border-anime-gold/30 hover:text-anime-gold transition-all duration-300"
               style={{ fontSize: `${scale * 0.75}rem` }}
             >
               #{tag.name}

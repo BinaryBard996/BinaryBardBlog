@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import type { Category } from "@/types/blog"
+import type { Category } from "../../types/blog"
 
 interface CategoryListProps {
   categories: Category[]
@@ -11,10 +11,10 @@ export function CategoryList({ categories, activeCategory }: CategoryListProps) 
     <div className="flex flex-wrap gap-2">
       <Link
         to="/categories"
-        className={`px-4 py-2 text-sm font-medium rounded-full transition-all border ${
+        className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 border cursor-pointer ${
           !activeCategory
-            ? "bg-anime-gold/15 border-anime-gold/40 text-anime-gold shadow-anime-gold"
-            : "anime-panel-light text-[#9b97a0] hover:text-anime-gold hover:border-anime-gold/30"
+            ? "bg-anime-gold/15 border-anime-gold/40 text-anime-gold shadow-glow-gold"
+            : "bg-secondary/50 border-border text-muted-foreground hover:text-anime-gold hover:border-anime-gold/30"
         }`}
       >
         全部
@@ -23,10 +23,10 @@ export function CategoryList({ categories, activeCategory }: CategoryListProps) 
         <Link
           key={cat.name}
           to={`/categories?cat=${encodeURIComponent(cat.name)}`}
-          className={`px-4 py-2 text-sm font-medium rounded-full transition-all border ${
+          className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 border cursor-pointer ${
             activeCategory === cat.name
-              ? "bg-anime-gold/15 border-anime-gold/40 text-anime-gold shadow-anime-gold"
-              : "anime-panel-light text-[#9b97a0] hover:text-anime-gold hover:border-anime-gold/30"
+              ? "bg-anime-gold/15 border-anime-gold/40 text-anime-gold shadow-glow-gold"
+              : "bg-secondary/50 border-border text-muted-foreground hover:text-anime-gold hover:border-anime-gold/30"
           }`}
         >
           {cat.name}

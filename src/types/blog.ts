@@ -7,6 +7,7 @@ export interface PostMeta {
   tags: string[]
   cover?: string
   readingTime: number
+  pinned?: boolean
 }
 
 export interface BlogPost extends PostMeta {
@@ -31,22 +32,4 @@ export interface Category {
   name: string
   count: number
   slug: string
-}
-
-export interface SiteConfig {
-  title: string
-  description: string
-  author: string
-  url: string
-  github: string
-  email: string
-}
-
-export const siteConfig: SiteConfig = {
-  title: "BinaryBard",
-  description: "分享技术见解与编程实践的个人博客",
-  author: "BinaryBard",
-  url: "https://binary-bard-blog-8fvf1sg82895f0b-1404499502.tcloudbaseapp.com",
-  github: "https://github.com/BinaryBard996",
-  email: "hello@binarybard.dev",
 }

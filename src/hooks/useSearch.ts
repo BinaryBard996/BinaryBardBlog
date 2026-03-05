@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react"
-import { loadSearchIndex, search as performSearch } from "@/lib/search"
-import type { SearchResult } from "@/types/blog"
+import { loadSearchIndex, search as performSearch } from "../lib/search"
+import type { SearchResult } from "../types/blog"
 
 export function useSearch() {
   const [query, setQuery] = useState("")

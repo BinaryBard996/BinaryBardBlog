@@ -1,10 +1,11 @@
 import { useMemo } from "react"
 import { useSearchParams } from "react-router-dom"
 import { FolderOpen } from "lucide-react"
-import { PostList } from "@/components/blog/PostList"
-import { CategoryList } from "@/components/blog/CategoryList"
-import { Sidebar } from "@/components/layout/Sidebar"
-import { getCategories, getAllTags, filterByCategory, filterByTag } from "@/lib/posts"
+import { PostList } from "../components/blog/PostList"
+import { CategoryList } from "../components/blog/CategoryList"
+import { Sidebar } from "../components/layout/Sidebar"
+import { AnimatedPage } from "../components/common/AnimatedPage"
+import { getCategories, getAllTags, filterByCategory, filterByTag } from "../lib/posts"
 import posts from "virtual:blog-posts"
 
 export function CategoryPage() {
@@ -28,41 +29,41 @@ export function CategoryPage() {
     : "全部文章"
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
-      {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-lg anime-panel-light flex items-center justify-center">
-            <FolderOpen className="w-5 h-5 text-anime-gold" />
+    <AnimatedPage>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+        <div className="mb-8">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-lg bg-secondary/50 border border-border flex items-center justify-center">
+              <FolderOpen className="w-5 h-5 text-anime-gold" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-foreground font-heading">
+                {pageTitle}
+              </h1>
+              <p className="text-xs text-muted-foreground tracking-wider">
+                共 {filteredPosts.length} 篇文章
+              </p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-2xl font-bold text-[#e8e4dc] font-serif">
-              {pageTitle}
-            </h1>
-            <p className="text-xs text-[#6b6773] tracking-wider">
-              共 {filteredPosts.length} 篇文章
-            </p>
-          </div>
+          <CategoryList categories={categories} activeCategory={activeCategory} />
         </div>
-        <CategoryList categories={categories} activeCategory={activeCategory} />
-      </div>
 
-      {/* Content */}
-      <div className="flex flex-col lg:flex-row gap-8">
-        <div className="flex-1 min-w-0">
-          <PostList posts={filteredPosts} />
-        </div>
-        <div className="lg:w-80 flex-shrink-0">
-          <div className="lg:sticky lg:top-20">
-            <Sidebar
-              categories={categories}
-              tags={tags}
-              recentPosts={posts}
-              currentCategory={activeCategory}
-            />
+        <div className="flex flex-col lg:flex-row gap-8">
+          <div className="flex-1 min-w-0">
+            <PostList posts={filteredPosts} />
+          </div>
+          <div className="lg:w-80 flex-shrink-0">
+            <div className="lg:sticky lg:top-20">
+              <Sidebar
+                categories={categories}
+                tags={tags}
+                recentPosts={posts}
+                currentCategory={activeCategory}
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </AnimatedPage>
   )
 }

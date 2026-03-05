@@ -1,10 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import { Layout } from "@/components/layout/Layout"
-import { HomePage } from "@/pages/HomePage"
-import { PostPage } from "@/pages/PostPage"
-import { CategoryPage } from "@/pages/CategoryPage"
-import { SearchPage } from "@/pages/SearchPage"
-import { AboutPage } from "@/pages/AboutPage"
+import { Layout } from "./components/layout/Layout"
+import { HomePage } from "./pages/HomePage"
+import { PostPage } from "./pages/PostPage"
+import { ArchivesPage } from "./pages/ArchivesPage"
+import { CategoryPage } from "./pages/CategoryPage"
+import { SearchPage } from "./pages/SearchPage"
+import { AboutPage } from "./pages/AboutPage"
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/posts/:slug" element={<PostPage />} />
+          <Route path="/archives" element={<ArchivesPage />} />
           <Route path="/categories" element={<CategoryPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/about" element={<AboutPage />} />

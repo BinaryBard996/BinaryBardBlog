@@ -13,6 +13,7 @@
     "@radix-ui/react-separator": "^1.1.8",
     "@radix-ui/react-slot": "^1.2.4",
     "flexsearch": "^0.7.43",
+    "framer-motion": "^12.35.0",
     "gray-matter": "^4.0.3",
     "highlight.js": "^11.9.0",
     "lucide-react": "^0.344.0",

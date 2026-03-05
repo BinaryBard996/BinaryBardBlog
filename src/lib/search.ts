@@ -1,4 +1,4 @@
-import type { SearchResult } from "@/types/blog"
+import type { SearchResult } from "../types/blog"
 
 interface SearchEntry {
   slug: string

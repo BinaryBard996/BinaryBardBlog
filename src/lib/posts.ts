@@ -1,4 +1,4 @@
-import type { PostMeta, Category } from "@/types/blog"
+import type { PostMeta, Category } from "../types/blog"
 
 export function getCategories(posts: PostMeta[]): Category[] {
   const map = new Map<string, number>()
@@ -69,4 +69,26 @@ export function paginatePosts(
     totalPages,
     currentPage,
   }
+}
+
+export function sortWithPinned(posts: PostMeta[]): PostMeta[] {
+  return [...posts].sort((a, b) => {
+    if (a.pinned && !b.pinned) return -1
+    if (!a.pinned && b.pinned) return 1
+    return new Date(b.date).getTime() - new Date(a.date).getTime()
+  })
+}
+
+export function groupByYear(posts: PostMeta[]): Map<string, PostMeta[]> {
+  const groups = new Map<string, PostMeta[]>()
+  const sorted = [...posts].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  )
+  for (const post of sorted) {
+    const year = new Date(post.date).getFullYear().toString()
+    const group = groups.get(year) || []
+    group.push(post)
+    groups.set(year, group)
+  }
+  return groups
 }

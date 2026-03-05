@@ -1,4 +1,4 @@
-import type { TOCItem } from "@/types/blog"
+import type { TOCItem } from "../types/blog"
 
 export function extractTOC(markdown: string): TOCItem[] {
   const headingRegex = /^(#{2,4})\s+(.+)$/gm

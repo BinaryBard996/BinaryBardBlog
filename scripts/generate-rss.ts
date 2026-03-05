@@ -13,8 +13,8 @@ interface PostData {
 }
 
 const SITE_URL = process.env.SITE_URL || "https://binary-bard-blog-8fvf1sg82895f0b-1404499502.tcloudbaseapp.com"
-const SITE_TITLE = "BinaryBard Blog"
-const SITE_DESCRIPTION = "分享技术见解与编程实践的个人博客"
+const SITE_TITLE = "BinaryBard"
+const SITE_DESCRIPTION = "游戏开发者的技术博客，专注 Unreal Engine 与软件工程"
 
 function loadPosts(): PostData[] {
   const postsDir = path.resolve(process.cwd(), "content/posts")

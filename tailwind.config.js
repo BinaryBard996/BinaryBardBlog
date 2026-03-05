@@ -52,6 +52,7 @@ export default {
           "gold-light": "#f0c66e",
           "gold-dark": "#b8922e",
           sky: "#7eb8da",
+          "sky-light": "#a5d0e8",
           lavender: "#9b8ec4",
           crimson: "#c45c5c",
           emerald: "#68b87a",
@@ -68,20 +69,21 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       boxShadow: {
-        "anime-gold": "0 0 15px rgba(212, 164, 76, 0.2), 0 0 45px rgba(212, 164, 76, 0.08)",
-        "anime-gold-strong": "0 0 20px rgba(212, 164, 76, 0.35), 0 0 60px rgba(212, 164, 76, 0.15)",
-        "anime-sky": "0 0 15px rgba(126, 184, 218, 0.2), 0 0 45px rgba(126, 184, 218, 0.08)",
-        "anime-panel": "0 4px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(212, 164, 76, 0.1)",
+        "glow-gold": "0 0 15px rgba(212,164,76,0.15), 0 0 45px rgba(212,164,76,0.06)",
+        "glow-gold-strong": "0 0 20px rgba(212,164,76,0.3), 0 0 60px rgba(212,164,76,0.12)",
+        "glow-sky": "0 0 15px rgba(126,184,218,0.15), 0 0 45px rgba(126,184,218,0.06)",
+        "panel-dark": "0 4px 30px rgba(0,0,0,0.4), inset 0 1px 0 rgba(212,164,76,0.08)",
+        "card-hover": "0 8px 32px rgba(0,0,0,0.3), 0 0 20px rgba(212,164,76,0.1)",
       },
       animation: {
-        "fade-in": "fadeIn 0.5s ease-in-out",
+        "fade-in": "fadeIn 0.5s ease-out",
         "slide-up": "slideUp 0.5s ease-out",
         "slide-down": "slideDown 0.3s ease-out",
         "scale-in": "scaleIn 0.2s ease-out",
         "float": "float 3s ease-in-out infinite",
         "shimmer": "shimmer 2.5s linear infinite",
         "breath-glow": "breathGlow 3s ease-in-out infinite",
-        "diamond-spin": "diamondSpin 8s linear infinite",
+        "bounce-slow": "bounceSlow 2s ease-in-out infinite",
       },
       keyframes: {
         fadeIn: {
@@ -109,12 +111,12 @@ export default {
           "100%": { backgroundPosition: "200% 0" },
         },
         breathGlow: {
-          "0%, 100%": { boxShadow: "0 0 15px rgba(212, 164, 76, 0.15)" },
-          "50%": { boxShadow: "0 0 30px rgba(212, 164, 76, 0.35)" },
+          "0%, 100%": { boxShadow: "0 0 15px rgba(212,164,76,0.12)" },
+          "50%": { boxShadow: "0 0 30px rgba(212,164,76,0.3)" },
         },
-        diamondSpin: {
-          "0%": { transform: "rotate(0deg)" },
-          "100%": { transform: "rotate(360deg)" },
+        bounceSlow: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-6px)" },
         },
       },
     },
