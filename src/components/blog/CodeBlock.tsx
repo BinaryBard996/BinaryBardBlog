@@ -1,5 +1,8 @@
-import { useState, useEffect, type ReactNode } from "react"
-import { Check, Copy } from "lucide-react"
+import { useState, useEffect, useRef, type ReactNode } from "react"
+import { Check, Copy, ChevronDown, ChevronUp } from "lucide-react"
+
+const COLLAPSE_THRESHOLD = 15
+const COLLAPSED_HEIGHT = 300
 
 interface CodeBlockProps {
   children: ReactNode
@@ -19,7 +22,19 @@ function extractText(node: ReactNode): string {
 
 export function CodeBlock({ children, className }: CodeBlockProps) {
   const [copied, setCopied] = useState(false)
+  const [collapsed, setCollapsed] = useState(false)
+  const [shouldCollapse, setShouldCollapse] = useState(false)
+  const codeRef = useRef<HTMLPreElement>(null)
   const language = className?.replace(/^.*language-/, "").replace(/\s.*$/, "") || "text"
+
+  useEffect(() => {
+    const text = extractText(children)
+    const lineCount = text.split("\n").length
+    if (lineCount > COLLAPSE_THRESHOLD) {
+      setShouldCollapse(true)
+      setCollapsed(true)
+    }
+  }, [children])
 
   const handleCopy = async () => {
     const text = extractText(children)
@@ -57,9 +72,40 @@ export function CodeBlock({ children, className }: CodeBlockProps) {
         </button>
       </div>
       {/* Code content already highlighted by rehype-highlight */}
-      <pre className="!mt-0 !rounded-t-none">
-        <code className={className}>{children}</code>
-      </pre>
+      <div className="relative">
+        <pre
+          ref={codeRef}
+          className="!mt-0 !rounded-t-none transition-[max-height] duration-300 overflow-hidden"
+          style={
+            shouldCollapse && collapsed
+              ? { maxHeight: `${COLLAPSED_HEIGHT}px` }
+              : undefined
+          }
+        >
+          <code className={className}>{children}</code>
+        </pre>
+        {shouldCollapse && collapsed && (
+          <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[#0d0d20] to-transparent pointer-events-none" />
+        )}
+      </div>
+      {shouldCollapse && (
+        <button
+          onClick={() => setCollapsed(!collapsed)}
+          className="flex items-center justify-center gap-1.5 w-full py-2 bg-slate-800/80 border-t border-slate-700/50 text-xs text-slate-400 hover:text-slate-200 hover:bg-slate-700/60 transition-colors cursor-pointer"
+        >
+          {collapsed ? (
+            <>
+              <ChevronDown className="w-3.5 h-3.5" />
+              <span>展开代码</span>
+            </>
+          ) : (
+            <>
+              <ChevronUp className="w-3.5 h-3.5" />
+              <span>收起代码</span>
+            </>
+          )}
+        </button>
+      )}
     </div>
   )
 }

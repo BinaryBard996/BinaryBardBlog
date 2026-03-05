@@ -35,21 +35,20 @@ export function Header({ onSearchOpen }: HeaderProps) {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "glass shadow-lg shadow-slate-200/20 dark:shadow-slate-900/30"
+          ? "glass shadow-lg shadow-black/30"
           : "bg-transparent"
       }`}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link
-            to="/"
-            className="flex items-center gap-2 group"
-          >
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center text-white font-bold text-sm shadow-md group-hover:shadow-brand-500/30 transition-shadow">
-              B
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="relative">
+              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-anime-gold to-anime-gold-dark flex items-center justify-center text-anime-dark font-bold text-sm shadow-anime-gold transition-shadow group-hover:shadow-anime-gold-strong">
+                BB
+              </div>
             </div>
-            <span className="text-lg font-bold bg-gradient-to-r from-brand-600 to-brand-400 bg-clip-text text-transparent">
+            <span className="text-lg font-bold bg-gradient-to-r from-anime-gold via-anime-gold-light to-anime-sky bg-clip-text text-transparent font-cute">
               {siteConfig.title}
             </span>
           </Link>
@@ -60,13 +59,16 @@ export function Header({ onSearchOpen }: HeaderProps) {
               <Link
                 key={link.href}
                 to={link.href}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`relative px-4 py-2 text-sm font-medium transition-all duration-200 ${
                   location.pathname === link.href
-                    ? "text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-950/50"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
+                    ? "text-anime-gold"
+                    : "text-[#9b97a0] hover:text-anime-gold-light"
                 }`}
               >
-                {link.label}
+                <span className="relative z-10">{link.label}</span>
+                {location.pathname === link.href && (
+                  <div className="absolute bottom-0 left-2 right-2 h-[2px] bg-gradient-to-r from-anime-gold to-anime-gold-light rounded-full" />
+                )}
               </Link>
             ))}
           </nav>
@@ -77,7 +79,7 @@ export function Header({ onSearchOpen }: HeaderProps) {
               variant="ghost"
               size="icon"
               onClick={onSearchOpen}
-              className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
+              className="text-[#9b97a0] hover:text-anime-sky hover:bg-anime-sky/10"
               title="搜索 (Ctrl+K)"
             >
               <Search className="h-4 w-4" />
@@ -91,7 +93,7 @@ export function Header({ onSearchOpen }: HeaderProps) {
               <Button
                 variant="ghost"
                 size="icon"
-                className="text-orange-500 hover:text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950/30"
+                className="text-anime-gold hover:text-anime-gold-light hover:bg-anime-gold/10"
                 title="RSS 订阅"
               >
                 <Rss className="h-4 w-4" />
@@ -101,7 +103,7 @@ export function Header({ onSearchOpen }: HeaderProps) {
               variant="ghost"
               size="icon"
               onClick={toggleTheme}
-              className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
+              className="text-anime-gold hover:text-anime-gold-light hover:bg-anime-gold/10"
               title={theme === "dark" ? "切换到亮色模式" : "切换到暗色模式"}
             >
               {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
@@ -109,7 +111,7 @@ export function Header({ onSearchOpen }: HeaderProps) {
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden text-slate-600 dark:text-slate-400"
+              className="md:hidden text-[#9b97a0]"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -119,7 +121,7 @@ export function Header({ onSearchOpen }: HeaderProps) {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-slate-200/50 dark:border-slate-700/50 animate-slide-down">
+          <div className="md:hidden py-4 border-t border-anime-gold/10 animate-slide-down">
             <nav className="flex flex-col gap-1">
               {navLinks.map((link) => (
                 <Link
@@ -127,8 +129,8 @@ export function Header({ onSearchOpen }: HeaderProps) {
                   to={link.href}
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     location.pathname === link.href
-                      ? "text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-950/50"
-                      : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+                      ? "text-anime-gold bg-anime-gold/10"
+                      : "text-[#9b97a0] hover:text-anime-gold-light hover:bg-anime-panel/50"
                   }`}
                 >
                   {link.label}

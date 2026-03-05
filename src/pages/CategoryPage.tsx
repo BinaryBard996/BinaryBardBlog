@@ -32,14 +32,14 @@ export function CategoryPage() {
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-xl bg-brand-100 dark:bg-brand-900/40 flex items-center justify-center">
-            <FolderOpen className="w-5 h-5 text-brand-600 dark:text-brand-400" />
+          <div className="w-10 h-10 rounded-lg anime-panel-light flex items-center justify-center">
+            <FolderOpen className="w-5 h-5 text-anime-gold" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+            <h1 className="text-2xl font-bold text-[#e8e4dc] font-serif">
               {pageTitle}
             </h1>
-            <p className="text-sm text-slate-500 dark:text-slate-400">
+            <p className="text-xs text-[#6b6773] tracking-wider">
               共 {filteredPosts.length} 篇文章
             </p>
           </div>

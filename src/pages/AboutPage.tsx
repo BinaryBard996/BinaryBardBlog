@@ -1,36 +1,38 @@
-import { Github, Mail, Twitter, Globe, Code2, Server, Wrench, Sparkles } from "lucide-react"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { Github, Mail, Twitter, Globe, Gamepad2, Server, Wrench, Sparkles } from "lucide-react"
 import { siteConfig } from "@/types/blog"
 
 const skills = [
   {
-    category: "前端技术",
-    icon: Code2,
-    items: ["React", "TypeScript", "Next.js", "Vue.js", "Tailwind CSS", "Vite"],
+    category: "游戏引擎",
+    icon: Gamepad2,
+    color: "text-anime-gold",
+    items: ["Unreal Engine 5", "Blueprint", "GAS", "Slate UI", "PCG", "Niagara"],
   },
   {
-    category: "后端技术",
+    category: "编程语言",
     icon: Server,
-    items: ["Node.js", "Rust", "PostgreSQL", "Redis", "GraphQL", "REST API"],
+    color: "text-anime-sky",
+    items: ["C++", "Python", "TypeScript", "Rust", "Lua", "HLSL"],
   },
   {
-    category: "工具生态",
+    category: "工具链",
     icon: Wrench,
-    items: ["Git", "Docker", "Linux", "CI/CD", "Nginx", "Webpack"],
+    color: "text-anime-gold-light",
+    items: ["Git", "Perforce", "Docker", "CI/CD", "Houdini", "Excel Automation"],
   },
   {
     category: "兴趣方向",
     icon: Sparkles,
-    items: ["开源贡献", "性能优化", "架构设计", "技术写作", "Rust 系统编程", "WebAssembly"],
+    color: "text-anime-lavender",
+    items: ["插件开发", "工作流自动化", "技术美术", "性能优化", "工具设计", "技术写作"],
   },
 ]
 
 const timeline = [
-  { year: "2026", title: "BinaryBard 博客上线", desc: "搭建个人技术博客，开启系统化技术分享之旅" },
-  { year: "2025", title: "深入 Rust 领域", desc: "探索系统编程语言 Rust，在性能关键场景中实践应用" },
-  { year: "2024", title: "全栈工程化实践", desc: "构建完整的 DevOps 流水线，推动团队工程化水平提升" },
-  { year: "2023", title: "React 生态深耕", desc: "系统学习 React 生态，参与多个大型项目架构设计" },
+  { year: "2026", title: "BinaryBard 博客上线", desc: "搭建个人技术博客，开启系统化技术分享之旅", color: "text-anime-gold" },
+  { year: "2025", title: "UE GAS 工具链开发", desc: "开发 AbilityEditorHelper 等 Schema 驱动的自动化工具", color: "text-anime-sky" },
+  { year: "2024", title: "深入 Unreal Engine", desc: "专注 GAS 框架研究，构建游戏能力系统", color: "text-anime-gold-light" },
+  { year: "2023", title: "游戏开发之旅", desc: "系统学习游戏开发，参与多个项目的工具链建设", color: "text-anime-lavender" },
 ]
 
 export function AboutPage() {
@@ -38,33 +40,38 @@ export function AboutPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
       {/* Profile */}
       <div className="flex flex-col sm:flex-row items-center sm:items-start gap-8 mb-16">
-        <div className="w-28 h-28 rounded-2xl bg-gradient-to-br from-brand-400 to-brand-700 flex items-center justify-center text-white text-4xl font-bold shadow-xl shadow-brand-500/20 flex-shrink-0">
-          BB
+        <div className="relative flex-shrink-0">
+          <div className="w-28 h-28 rounded-full bg-gradient-to-br from-anime-gold/20 to-anime-lavender/20 border-3 border-anime-gold/40 flex items-center justify-center text-anime-gold text-3xl font-bold shadow-anime-gold">
+            BB
+          </div>
+          <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-anime-emerald border-2 border-anime-dark rounded-full flex items-center justify-center">
+            <span className="text-[8px] text-anime-dark font-bold">ON</span>
+          </div>
         </div>
         <div className="text-center sm:text-left">
-          <h1 className="text-3xl font-extrabold text-slate-900 dark:text-slate-100 mb-2">
+          <h1 className="text-3xl font-black text-[#e8e4dc] mb-2 font-serif">
             {siteConfig.author}
           </h1>
-          <p className="text-lg text-brand-600 dark:text-brand-400 font-medium mb-3">
-            Full Stack Developer &amp; Open Source Enthusiast
+          <p className="text-lg text-anime-gold font-medium mb-3 gold-text">
+            Game Developer & Tool Creator
           </p>
-          <p className="text-slate-600 dark:text-slate-400 leading-relaxed max-w-xl mb-4">
-            一名热爱技术的全栈开发者。相信代码的力量可以改变世界，致力于用优雅的解决方案应对复杂的工程挑战。
-            在工作之余，我喜欢阅读技术书籍、参与开源项目、撰写技术博客，与全球的开发者交流学习。
+          <p className="text-[#9b97a0] leading-relaxed max-w-xl mb-4">
+            一名热爱游戏开发的创作者。专注于 Unreal Engine 开发与工具链建设，
+            致力于用自动化工具提升团队开发效率。喜欢用代码构建有趣的世界。
           </p>
           <div className="flex items-center gap-3 justify-center sm:justify-start">
             {[
-              { icon: Github, href: siteConfig.github, label: "GitHub" },
-              { icon: Twitter, href: "#", label: "Twitter" },
-              { icon: Mail, href: `mailto:${siteConfig.email}`, label: "Email" },
-              { icon: Globe, href: siteConfig.url, label: "Website" },
-            ].map(({ icon: Icon, href, label }) => (
+              { icon: Github, href: siteConfig.github, label: "GitHub", hoverColor: "hover:text-anime-gold hover:border-anime-gold/30" },
+              { icon: Twitter, href: "#", label: "Twitter", hoverColor: "hover:text-anime-sky hover:border-anime-sky/30" },
+              { icon: Mail, href: `mailto:${siteConfig.email}`, label: "Email", hoverColor: "hover:text-anime-gold-light hover:border-anime-gold-light/30" },
+              { icon: Globe, href: siteConfig.url, label: "Website", hoverColor: "hover:text-anime-lavender hover:border-anime-lavender/30" },
+            ].map(({ icon: Icon, href, label, hoverColor }) => (
               <a
                 key={label}
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-brand-100 dark:hover:bg-brand-900/30 hover:text-brand-600 dark:hover:text-brand-400 transition-all cursor-pointer"
+                className={`w-10 h-10 rounded-lg anime-panel-light flex items-center justify-center text-[#6b6773] ${hoverColor} transition-all cursor-pointer`}
                 title={label}
               >
                 <Icon className="w-4 h-4" />
@@ -76,54 +83,54 @@ export function AboutPage() {
 
       {/* Skills */}
       <section className="mb-16">
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6">
-          技术栈
-        </h2>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-1 h-6 bg-gradient-to-b from-anime-gold to-anime-gold-dark rounded-full" />
+          <h2 className="text-2xl font-bold text-[#e8e4dc] font-serif">技术栈</h2>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {skills.map((group) => (
-            <Card key={group.category} className="border-slate-200/70 dark:border-slate-800 hover:shadow-md transition-shadow">
-              <CardContent className="pt-6">
-                <div className="flex items-center gap-2 mb-3">
-                  <group.icon className="w-5 h-5 text-brand-500" />
-                  <h3 className="font-semibold text-slate-900 dark:text-slate-100">
-                    {group.category}
-                  </h3>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {group.items.map((item) => (
-                    <Badge key={item} variant="secondary" className="text-xs">
-                      {item}
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+            <div key={group.category} className="anime-panel p-5 anime-card overflow-hidden">
+              <div className="flex items-center gap-2 mb-3">
+                <group.icon className={`w-5 h-5 ${group.color}`} />
+                <h3 className="font-bold text-[#e8e4dc]">
+                  {group.category}
+                </h3>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {group.items.map((item) => (
+                  <span key={item} className="inline-flex items-center px-2.5 py-1 text-xs text-[#9b97a0] rounded-full bg-anime-dark-mid/80 border border-anime-gold/10">
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
       </section>
 
       {/* Timeline */}
       <section>
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6">
-          成长历程
-        </h2>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-1 h-6 bg-gradient-to-b from-anime-sky to-anime-lavender rounded-full" />
+          <h2 className="text-2xl font-bold text-[#e8e4dc] font-serif">成长历程</h2>
+        </div>
         <div className="space-y-0">
           {timeline.map((item, index) => (
             <div key={item.year} className="flex gap-4">
               <div className="flex flex-col items-center">
-                <div className="w-10 h-10 rounded-full bg-brand-100 dark:bg-brand-900/40 flex items-center justify-center text-brand-600 dark:text-brand-400 text-sm font-bold flex-shrink-0">
+                <div className={`w-10 h-10 rounded-lg anime-panel-light flex items-center justify-center ${item.color} text-xs font-bold flex-shrink-0`}>
                   {item.year.slice(2)}
                 </div>
                 {index < timeline.length - 1 && (
-                  <div className="w-0.5 flex-1 bg-slate-200 dark:bg-slate-800 my-2" />
+                  <div className="w-px flex-1 bg-gradient-to-b from-anime-gold/20 to-transparent my-2" />
                 )}
               </div>
               <div className="pb-8">
-                <span className="text-xs text-brand-500 font-medium">{item.year}</span>
-                <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100 mt-0.5">
+                <span className={`text-xs ${item.color} tracking-wider font-medium`}>{item.year}</span>
+                <h3 className="text-base font-bold text-[#e8e4dc] mt-0.5">
                   {item.title}
                 </h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                <p className="text-sm text-[#6b6773] mt-1">
                   {item.desc}
                 </p>
               </div>

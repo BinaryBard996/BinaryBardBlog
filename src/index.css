@@ -4,48 +4,26 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-    --radius: 0.5rem;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 48%;
+    --background: 230 40% 7%;
+    --foreground: 35 20% 88%;
+    --card: 230 35% 10%;
+    --card-foreground: 35 20% 88%;
+    --popover: 230 35% 10%;
+    --popover-foreground: 35 20% 88%;
+    --primary: 40 55% 55%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 230 25% 16%;
+    --secondary-foreground: 35 20% 88%;
+    --muted: 230 25% 16%;
+    --muted-foreground: 260 8% 50%;
+    --accent: 230 25% 16%;
+    --accent-foreground: 35 20% 88%;
+    --destructive: 0 45% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 230 25% 20%;
+    --input: 230 25% 20%;
+    --ring: 40 55% 55%;
+    --radius: 0.75rem;
   }
 }
 
@@ -56,39 +34,205 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+    background-image:
+      radial-gradient(ellipse at 20% 50%, rgba(212, 164, 76, 0.03) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(126, 184, 218, 0.025) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 100%, rgba(155, 142, 196, 0.03) 0%, transparent 50%);
+    background-attachment: fixed;
   }
 }
 
-/* Scrollbar */
+/* Scrollbar - anime gold theme */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-transparent;
+  background: #0b0e1a;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-300 dark:bg-slate-700 rounded-full;
+  background: linear-gradient(180deg, #d4a44c, #9b8ec4);
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-400 dark:bg-slate-600;
+  background: linear-gradient(180deg, #f0c66e, #b8a4d8);
 }
 
-/* Markdown prose styles */
+/* ============================================
+   Anime UI Utility Classes
+   ============================================ */
+
+/* Glass panel - primary container style */
+.anime-panel {
+  background: rgba(11, 14, 30, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(212, 164, 76, 0.15);
+  border-radius: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.anime-panel:hover {
+  border-color: rgba(212, 164, 76, 0.3);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3), 0 0 15px rgba(212, 164, 76, 0.08);
+}
+
+/* Lighter panel variant */
+.anime-panel-light {
+  background: rgba(22, 27, 51, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(212, 164, 76, 0.1);
+  border-radius: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+/* Diamond corner decorations */
+.diamond-corner {
+  position: relative;
+}
+
+.diamond-corner::before,
+.diamond-corner::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border: 1.5px solid rgba(212, 164, 76, 0.4);
+  transform: rotate(45deg);
+}
+
+.diamond-corner::before {
+  top: -4px;
+  left: -4px;
+}
+
+.diamond-corner::after {
+  bottom: -4px;
+  right: -4px;
+}
+
+/* Diagonal stripe decoration */
+.diagonal-stripe {
+  position: relative;
+  overflow: hidden;
+}
+
+.diagonal-stripe::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60px;
+  height: 100%;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 3px,
+    rgba(212, 164, 76, 0.06) 3px,
+    rgba(212, 164, 76, 0.06) 6px
+  );
+  pointer-events: none;
+}
+
+/* Gold accent text */
+.gold-text {
+  color: #d4a44c;
+  text-shadow: 0 0 12px rgba(212, 164, 76, 0.3);
+}
+
+/* Sky accent text */
+.sky-text {
+  color: #7eb8da;
+  text-shadow: 0 0 12px rgba(126, 184, 218, 0.3);
+}
+
+/* Shimmer button effect */
+.shimmer-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.shimmer-btn:hover::after {
+  left: 100%;
+}
+
+/* Anime card hover */
+.anime-card {
+  transition: all 0.3s ease;
+}
+
+.anime-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 164, 76, 0.12);
+  border-color: rgba(212, 164, 76, 0.35);
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: rgba(11, 14, 26, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(212, 164, 76, 0.12);
+}
+
+/* Animate on scroll */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Search highlight */
+.search-highlight {
+  background: rgba(212, 164, 76, 0.3);
+  color: #fff;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+/* ============================================
+   Markdown Prose Styles - Anime Gold Theme
+   ============================================ */
+
 .prose {
-  @apply text-slate-700 dark:text-slate-300 leading-relaxed;
+  @apply text-[#c8c4bc] leading-relaxed;
 }
 
 .prose h1, .prose h2, .prose h3, .prose h4 {
-  @apply text-slate-900 dark:text-slate-100 font-bold;
+  @apply text-[#e8e4dc] font-bold;
   scroll-margin-top: 5rem;
 }
 
-.prose h1 { @apply text-3xl mt-10 mb-4; }
-.prose h2 { @apply text-2xl mt-8 mb-3; }
+.prose h1 { @apply text-3xl mt-10 mb-4 font-serif; }
+.prose h2 {
+  @apply text-2xl mt-8 mb-3 font-serif;
+  text-shadow: 0 0 20px rgba(212, 164, 76, 0.15);
+}
 .prose h3 { @apply text-xl mt-6 mb-2; }
 .prose h4 { @apply text-lg mt-4 mb-2; }
 
@@ -97,11 +241,15 @@
 }
 
 .prose a {
-  @apply text-brand-600 dark:text-brand-400 underline underline-offset-2 hover:text-brand-700 dark:hover:text-brand-300 transition-colors;
+  @apply text-anime-sky underline underline-offset-2 transition-colors;
+}
+.prose a:hover {
+  @apply text-anime-gold;
+  text-shadow: 0 0 8px rgba(212, 164, 76, 0.4);
 }
 
 .prose strong {
-  @apply text-slate-900 dark:text-slate-100 font-semibold;
+  @apply text-[#e8e4dc] font-semibold;
 }
 
 .prose ul, .prose ol {
@@ -115,16 +263,24 @@
   @apply my-1;
 }
 
+.prose li::marker {
+  color: #d4a44c;
+}
+
 .prose blockquote {
-  @apply border-l-4 border-brand-500 pl-4 my-4 italic text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-900/50 py-2 rounded-r-lg;
+  @apply border-l-4 border-anime-lavender pl-4 my-4 italic text-[#9b97a0] py-2 rounded-r-lg;
+  background: rgba(155, 142, 196, 0.06);
 }
 
 .prose img {
-  @apply rounded-xl shadow-lg my-6 mx-auto;
+  @apply rounded-lg my-6 mx-auto;
+  border: 1px solid rgba(212, 164, 76, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .prose hr {
-  @apply border-slate-200 dark:border-slate-800 my-8;
+  @apply my-8;
+  border-color: rgba(212, 164, 76, 0.15);
 }
 
 .prose table {
@@ -132,16 +288,20 @@
 }
 
 .prose th {
-  @apply border border-slate-200 dark:border-slate-700 px-4 py-2 bg-slate-50 dark:bg-slate-800 font-semibold text-left;
+  @apply px-4 py-2 font-semibold text-left text-[#e8e4dc];
+  background: rgba(212, 164, 76, 0.08);
+  border: 1px solid rgba(212, 164, 76, 0.15);
 }
 
 .prose td {
-  @apply border border-slate-200 dark:border-slate-700 px-4 py-2;
+  @apply px-4 py-2;
+  border: 1px solid rgba(26, 31, 56, 0.8);
 }
 
 /* Code block styles */
 .prose pre {
-  @apply my-4 rounded-xl overflow-hidden;
+  @apply my-4 rounded-lg overflow-hidden;
+  border: 1px solid rgba(212, 164, 76, 0.1);
 }
 
 .prose code {
@@ -149,34 +309,15 @@
 }
 
 .prose :not(pre) > code {
-  @apply bg-slate-100 dark:bg-slate-800 text-brand-600 dark:text-brand-400 px-1.5 py-0.5 rounded-md text-sm font-mono;
+  @apply px-1.5 py-0.5 rounded text-sm font-mono;
+  background: rgba(212, 164, 76, 0.08);
+  color: #f0c66e;
+  border: 1px solid rgba(212, 164, 76, 0.12);
 }
 
 /* Highlight.js overrides */
 .hljs {
-  @apply bg-slate-950 !important;
+  background: #0d0f1e !important;
   padding: 1.25rem !important;
-  border-radius: 0.75rem !important;
-}
-
-/* Search highlight */
-.search-highlight {
-  @apply bg-yellow-200 dark:bg-yellow-800 text-yellow-900 dark:text-yellow-100 px-0.5 rounded;
-}
-
-/* Glassmorphism utility */
-.glass {
-  @apply bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-white/20 dark:border-slate-700/50;
-}
-
-/* Animate on scroll */
-.animate-on-scroll {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.animate-on-scroll.visible {
-  opacity: 1;
-  transform: translateY(0);
+  border-radius: 0.5rem !important;
 }

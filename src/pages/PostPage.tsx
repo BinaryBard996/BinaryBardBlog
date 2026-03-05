@@ -1,8 +1,6 @@
 import { useEffect } from "react"
 import { useParams, Link } from "react-router-dom"
 import { Calendar, Clock, ArrowLeft, Tag } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { PostContent } from "@/components/blog/PostContent"
 import { TableOfContents } from "@/components/blog/TableOfContents"
 import { RelatedPosts } from "@/components/blog/RelatedPosts"
@@ -25,14 +23,13 @@ export function PostPage() {
   if (!post) {
     return (
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-20 text-center">
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+        <div className="text-6xl text-anime-gold font-bold mb-4">404</div>
+        <h1 className="text-2xl font-bold text-[#e8e4dc] mb-4">
           文章未找到
         </h1>
-        <Link to="/">
-          <Button variant="outline" className="cursor-pointer">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            返回首页
-          </Button>
+        <Link to="/" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg anime-panel text-anime-gold hover:border-anime-gold/30 transition-all">
+          <ArrowLeft className="w-4 h-4" />
+          返回首页
         </Link>
       </div>
     )
@@ -44,36 +41,42 @@ export function PostPage() {
   return (
     <article>
       {/* Post Header */}
-      <div className="bg-gradient-to-b from-slate-50 to-white dark:from-slate-900/50 dark:to-slate-950 border-b border-slate-200/50 dark:border-slate-800/50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
-          <Link to="/" className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-brand-600 dark:hover:text-brand-400 transition-colors mb-6">
+      <div className="relative bg-anime-dark border-b border-anime-gold/10 overflow-hidden">
+        {/* Background effects */}
+        <div className="absolute inset-0">
+          <div className="absolute top-10 left-10 w-64 h-64 bg-anime-gold/5 rounded-full blur-[80px]" />
+          <div className="absolute bottom-10 right-10 w-48 h-48 bg-anime-sky/5 rounded-full blur-[60px]" />
+        </div>
+
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 py-10">
+          <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-[#6b6773] hover:text-anime-gold transition-colors mb-6">
             <ArrowLeft className="w-4 h-4" />
-            返回首页
+            <span className="tracking-wider">返回</span>
           </Link>
           <div className="flex items-center gap-2 mb-4">
-            <Badge className="bg-brand-100 dark:bg-brand-900/40 text-brand-700 dark:text-brand-300 border-0">
+            <span className="inline-flex items-center px-3 py-1 text-xs tracking-wider text-anime-sky bg-anime-sky/10 border border-anime-sky/20 rounded-full">
               {post.category}
-            </Badge>
+            </span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-slate-100 leading-tight mb-4">
+          <h1 className="text-3xl sm:text-4xl font-black text-[#e8e4dc] leading-tight mb-4 font-serif">
             {post.title}
           </h1>
-          <p className="text-lg text-slate-500 dark:text-slate-400 mb-6">
+          <p className="text-lg text-[#9b97a0] mb-6">
             {post.description}
           </p>
-          <div className="flex flex-wrap items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+          <div className="flex flex-wrap items-center gap-4 text-sm text-[#6b6773]">
             <span className="flex items-center gap-1.5">
-              <Calendar className="w-4 h-4" />
+              <Calendar className="w-4 h-4 text-anime-gold/60" />
               {formatDate(post.date)}
             </span>
             <span className="flex items-center gap-1.5">
-              <Clock className="w-4 h-4" />
+              <Clock className="w-4 h-4 text-anime-gold/60" />
               {post.readingTime} 分钟阅读
             </span>
             {post.tags.length > 0 && (
               <span className="flex items-center gap-1.5">
-                <Tag className="w-4 h-4" />
-                {post.tags.join(", ")}
+                <Tag className="w-4 h-4 text-anime-gold/60" />
+                {post.tags.join(" · ")}
               </span>
             )}
           </div>
