@@ -270,3 +270,166 @@ pinned: true                    # Optional, defaults to false
 8. **Type safety**: Export all interfaces/types that cross file boundaries
 9. **Shadcn/ui**: Use existing shadcn components (Button, Card, Badge, Input, Separator) — do not recreate
 10. **Performance**: Lazy-load heavy components; use Intersection Observer for scroll animations; framer-motion tree-shakes automatically
+
+## Importing Articles from Word (.docx) Files
+
+When a user requests to import an article from a `.docx` file into the blog, use the following approach. A `.docx` file is essentially a ZIP archive containing XML files. It can be parsed using Python's standard library (`zipfile` + `xml.etree.ElementTree`) without any third-party dependencies.
+
+### Method Overview
+
+1. **Create a Python extraction script** at `extract_docx.py` in the project root
+2. **Run the script** to produce `extracted_content.txt` in the project root
+3. **Read the extracted text** and manually compose the final Markdown post with proper frontmatter
+4. **Clean up**: delete `extract_docx.py` and `extracted_content.txt` after the article is created
+
+### Extraction Script Template
+
+Place the following script at the project root as `extract_docx.py`. Adjust `docx_path` to the actual `.docx` file location:
+
+```python
+#!/usr/bin/env python3
+"""Extract text content from a .docx file using only Python standard library."""
+import zipfile
+import xml.etree.ElementTree as ET
+import sys
+import os
+
+WNS = 'http://schemas.openxmlformats.org/wordprocessingml/2006/main'
+
+def extract_docx_text(docx_path, output_path):
+    ns = {'w': WNS}
+    paragraphs = []
+
+    with zipfile.ZipFile(docx_path, 'r') as z:
+        # 1. Build style map (style ID -> style name)
+        style_map = {}
+        if 'word/styles.xml' in z.namelist():
+            with z.open('word/styles.xml') as sf:
+                for style in ET.parse(sf).getroot().iter(f'{{{WNS}}}style'):
+                    sid = style.get(f'{{{WNS}}}styleId', '')
+                    sname_el = style.find('w:name', ns)
+                    if sname_el is not None:
+                        style_map[sid] = sname_el.get(f'{{{WNS}}}val', '')
+
+        # 2. Parse main document
+        with z.open('word/document.xml') as f:
+            root = ET.parse(f).getroot()
+
+            for para in root.iter(f'{{{WNS}}}p'):
+                texts = []
+                pPr = para.find('w:pPr', ns)
+                style_name = ''
+                numId = None
+                ilvl = None
+
+                if pPr is not None:
+                    pStyle = pPr.find('w:pStyle', ns)
+                    if pStyle is not None:
+                        sid = pStyle.get(f'{{{WNS}}}val', '')
+                        style_name = style_map.get(sid, sid).lower()
+
+                    numPr = pPr.find('w:numPr', ns)
+                    if numPr is not None:
+                        ilvl_el = numPr.find('w:ilvl', ns)
+                        numId_el = numPr.find('w:numId', ns)
+                        if ilvl_el is not None:
+                            ilvl = int(ilvl_el.get(f'{{{WNS}}}val', '0'))
+                        if numId_el is not None:
+                            numId = numId_el.get(f'{{{WNS}}}val', '')
+
+                for run in para.iter(f'{{{WNS}}}r'):
+                    rPr = run.find('w:rPr', ns)
+                    is_bold = is_italic = is_code = False
+
+                    if rPr is not None:
+                        b_el = rPr.find('w:b', ns)
+                        if b_el is not None:
+                            bval = b_el.get(f'{{{WNS}}}val', 'true')
+                            is_bold = bval not in ('0', 'false')
+                        i_el = rPr.find('w:i', ns)
+                        if i_el is not None:
+                            ival = i_el.get(f'{{{WNS}}}val', 'true')
+                            is_italic = ival not in ('0', 'false')
+                        rFonts = rPr.find('w:rFonts', ns)
+                        if rFonts is not None:
+                            font = rFonts.get(f'{{{WNS}}}ascii', '').lower()
+                            is_code = any(f in font for f in ['consolas', 'courier', 'mono', 'source code'])
+
+                    for t in run.iter(f'{{{WNS}}}t'):
+                        if t.text:
+                            text = t.text
+                            if is_code and not is_bold:
+                                text = f'`{text}`'
+                            elif is_bold and is_italic:
+                                text = f'***{text}***'
+                            elif is_bold:
+                                text = f'**{text}**'
+                            elif is_italic:
+                                text = f'*{text}*'
+                            texts.append(text)
+
+                line = ''.join(texts)
+
+                # Heading detection
+                heading_level = 0
+                for level in range(1, 7):
+                    if f'heading {level}' in style_name or style_name == f'heading{level}':
+                        heading_level = level
+                        break
+                if heading_level == 0 and 'title' in style_name:
+                    heading_level = 1
+
+                if heading_level > 0:
+                    line = f'{"#" * heading_level} {line}'
+                elif numId is not None:
+                    indent = '  ' * (ilvl or 0)
+                    line = f'{indent}- {line}'
+
+                paragraphs.append(line)
+
+    with open(output_path, 'w', encoding='utf-8') as f:
+        f.write('\n\n'.join(paragraphs))
+
+    print(f'Extracted {len(paragraphs)} paragraphs to {output_path}')
+
+if __name__ == '__main__':
+    docx_path = r'<PATH_TO_DOCX_FILE>'          # e.g. r'D:\File\MyArticle.docx'
+    output_path = r'i:\Project\BinaryBardBlog\extracted_content.txt'
+
+    if not os.path.exists(docx_path):
+        print(f'ERROR: File not found: {docx_path}')
+        sys.exit(1)
+
+    extract_docx_text(docx_path, output_path)
+    print('Done!')
+```
+
+### How to Execute
+
+Since the `.docx` file is typically outside the project workspace and cannot be read directly by file-reading tools, the script must be executed externally:
+
+1. **Ask the user to run the script** via their system terminal:
+   ```bash
+   cd i:\Project\BinaryBardBlog
+   python extract_docx.py
+   ```
+2. Once `extracted_content.txt` is generated, read it using `read_file` tool
+3. Compose the final Markdown article from the extracted text, adding proper frontmatter and fixing formatting (code blocks, image references, etc.)
+
+### Post-Extraction Workflow
+
+After reading `extracted_content.txt`:
+
+1. **Identify headings**: The script converts Word heading styles to Markdown `#` headings
+2. **Fix code blocks**: The script marks inline code with backticks, but multi-line code blocks need manual fencing (````cpp ... `````)
+3. **Handle images**: Word images are stored in `word/media/` inside the ZIP. If needed, extract them separately and place in `public/images/<post-slug>/`
+4. **Write frontmatter**: Create proper frontmatter following the blog's schema (title, description, date, category, tags, cover, section)
+5. **Save as Markdown**: Write the final `.md` file to `content/posts/<slug>.md`
+6. **Clean up**: Delete `extract_docx.py` and `extracted_content.txt` from the project root
+
+### Limitations
+
+- **Images**: The script extracts text only. Word-embedded images must be extracted separately from the `word/media/` directory inside the `.docx` ZIP archive
+- **Complex tables**: Simple text extraction may not preserve table formatting perfectly; manual adjustment may be needed
+- **Code blocks**: Multi-line code blocks in Word (often formatted as monospace paragraphs) will appear as individual paragraphs with inline code markers — they need to be merged into fenced code blocks manually
+- **Nested lists**: The script handles basic list nesting via `numPr` properties, but complex numbering schemes may need manual cleanup

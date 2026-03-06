@@ -1,3 +1,7 @@
+---
+# Please note: Do not modify the header of this document. If modified, CodeBuddy (Internal Edition) will apply the default logic settings.
+type: always
+---
 # CRUD Operations with CloudBase
 
 This document covers Create, Update, and Delete operations for CloudBase document database.
@@ -520,4 +524,3 @@ await db.runTransaction(async transaction => {
 8. **Limit updates**: Only update changed fields
 9. **Test permissions**: Ensure database security rules allow operations
 10. **Log operations**: Track important data changes
-

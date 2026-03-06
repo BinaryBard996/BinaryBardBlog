@@ -1,3 +1,7 @@
+---
+# Please note: Do not modify the header of this document. If modified, CodeBuddy (Internal Edition) will apply the default logic settings.
+type: always
+---
 # CRUD Operations with CloudBase
 
 This document covers Create, Update, and Delete operations for CloudBase document database.
@@ -555,4 +559,3 @@ await db.collection('todos').add({
 ```
 
 **Note:** The `_openid` field is used internally by CloudBase for user identification and permission control. It is automatically populated from the authenticated user's session and cannot be manually overridden.
-

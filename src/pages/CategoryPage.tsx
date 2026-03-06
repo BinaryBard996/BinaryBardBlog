@@ -6,9 +6,14 @@ import { CategoryList } from "../components/blog/CategoryList"
 import { Sidebar } from "../components/layout/Sidebar"
 import { AnimatedPage } from "../components/common/AnimatedPage"
 import { getCategories, getAllTags, filterByCategory, filterByTag } from "../lib/posts"
+import { useHead } from "../hooks/useHead"
 import posts from "virtual:blog-posts"
 
 export function CategoryPage() {
+  useHead({
+    title: "分类",
+    description: "按分类和标签浏览 BinaryBard 的文章",
+  })
   const [searchParams] = useSearchParams()
   const activeCategory = searchParams.get("cat") || undefined
   const activeTag = searchParams.get("tag") || undefined

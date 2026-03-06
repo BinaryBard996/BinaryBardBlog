@@ -1,3 +1,7 @@
+---
+# Please note: Do not modify the header of this document. If modified, CodeBuddy (Internal Edition) will apply the default logic settings.
+type: always
+---
 # Pagination with CloudBase
 
 This document explains how to implement pagination for large datasets in CloudBase document database.
@@ -312,4 +316,3 @@ function useInfiniteScroll(collectionName, pageSize = 20) {
 6. Validate page numbers (must be >= 1)
 7. Consider using URL query parameters for page state
 8. Implement error handling and retry logic
-

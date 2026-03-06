@@ -1,3 +1,7 @@
+---
+# Please note: Do not modify the header of this document. If modified, CodeBuddy (Internal Edition) will apply the default logic settings.
+type: always
+---
 # Aggregation Queries with CloudBase
 
 This document explains how to perform aggregation operations for data analysis and statistics in CloudBase document database.
@@ -381,4 +385,3 @@ try {
     console.error('Aggregation failed:', error);
 }
 ```
-

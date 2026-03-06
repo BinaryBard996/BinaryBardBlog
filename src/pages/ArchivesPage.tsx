@@ -7,9 +7,14 @@ import { AnimatedPage } from "../components/common/AnimatedPage"
 import { ScrollReveal } from "../components/common/ScrollReveal"
 import { groupByYear } from "../lib/posts"
 import { formatDate } from "../lib/utils"
+import { useHead } from "../hooks/useHead"
 import posts from "virtual:blog-posts"
 
 export function ArchivesPage() {
+  useHead({
+    title: "归档",
+    description: "按时间线浏览 BinaryBard 的所有文章",
+  })
   const grouped = useMemo(() => groupByYear(posts), [])
   const years = Array.from(grouped.keys())
 

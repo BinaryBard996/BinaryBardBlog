@@ -5,6 +5,7 @@ import { Button } from "../components/ui/button"
 import { AnimatedPage } from "../components/common/AnimatedPage"
 import { ScrollReveal } from "../components/common/ScrollReveal"
 import { siteConfig, socialLinks, skills, projects, timeline } from "../config/site"
+import { useHead } from "../hooks/useHead"
 
 function SkillBar({ name, level, delay }: { name: string; level: number; delay: number }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -38,6 +39,10 @@ const categoryIcons: Record<string, typeof Gamepad2> = {
 }
 
 export function AboutPage() {
+  useHead({
+    title: "关于",
+    description: "游戏开发者 BinaryBard 的个人简介 — 专注 Unreal Engine 与 GAS 框架",
+  })
   const skillsByCategory = skills.reduce((acc, skill) => {
     if (!acc[skill.category]) acc[skill.category] = []
     acc[skill.category].push(skill)

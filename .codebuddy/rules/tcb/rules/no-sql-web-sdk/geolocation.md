@@ -1,3 +1,7 @@
+---
+# Please note: Do not modify the header of this document. If modified, CodeBuddy (Internal Edition) will apply the default logic settings.
+type: always
+---
 # Geolocation Queries with CloudBase
 
 This document explains how to work with geographic data and perform location-based queries in CloudBase.
@@ -438,4 +442,3 @@ function NearbyPlaces({ userLat, userLon }) {
     );
 }
 ```
-

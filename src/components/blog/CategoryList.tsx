@@ -4,13 +4,14 @@ import type { Category } from "../../types/blog"
 interface CategoryListProps {
   categories: Category[]
   activeCategory?: string
+  basePath?: string
 }
 
-export function CategoryList({ categories, activeCategory }: CategoryListProps) {
+export function CategoryList({ categories, activeCategory, basePath = "/categories" }: CategoryListProps) {
   return (
     <div className="flex flex-wrap gap-2">
       <Link
-        to="/categories"
+        to={basePath}
         className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 border cursor-pointer ${
           !activeCategory
             ? "bg-anime-gold/15 border-anime-gold/40 text-anime-gold shadow-glow-gold"
@@ -22,7 +23,7 @@ export function CategoryList({ categories, activeCategory }: CategoryListProps) 
       {categories.map((cat) => (
         <Link
           key={cat.name}
-          to={`/categories?cat=${encodeURIComponent(cat.name)}`}
+          to={`${basePath}?cat=${encodeURIComponent(cat.name)}`}
           className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 border cursor-pointer ${
             activeCategory === cat.name
               ? "bg-anime-gold/15 border-anime-gold/40 text-anime-gold shadow-glow-gold"

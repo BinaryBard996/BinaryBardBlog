@@ -1,3 +1,7 @@
+---
+# Please note: Do not modify the header of this document. If modified, CodeBuddy (Internal Edition) will apply the default logic settings.
+type: always
+---
 # CloudBase NoSQL Database Security Rules
 
 This document covers how to configure security rules for CloudBase NoSQL database collections to control read/write permissions.
@@ -891,4 +895,3 @@ Through reasonable permission configuration, you can build a data access control
 - [Security Rules Introduction](/rule/introduce)
 - MCP Tool: `writeSecurityRule` - Configure security rules
 - MCP Tool: `readSecurityRule` - Read current security rules
-

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { Link, useLocation } from "react-router-dom"
 import { Search, Sun, Moon, Menu, X, Rss } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence, LayoutGroup } from "framer-motion"
 import { Button } from "../ui/button"
 import { useTheme } from "../../hooks/useTheme"
 import { siteConfig, navLinks } from "../../config/site"
@@ -37,22 +37,31 @@ export function Header({ onSearchOpen }: HeaderProps) {
             </span>
           </Link>
 
+          <LayoutGroup>
           <nav className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`relative px-4 py-2 text-sm font-medium transition-colors duration-200 ${
-                  location.pathname === link.path ? "text-anime-gold" : "text-muted-foreground hover:text-anime-gold-light"
-                }`}
-              >
-                {link.label}
-                {location.pathname === link.path && (
-                  <motion.div layoutId="nav-underline" className="absolute bottom-0 left-2 right-2 h-[2px] bg-gradient-to-r from-anime-gold to-anime-sky rounded-full" />
-                )}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = link.path === "/" ? location.pathname === "/" : location.pathname.startsWith(link.path)
+              return (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className={`relative px-4 py-2 text-sm font-medium transition-colors duration-200 ${
+                    isActive ? "text-anime-gold" : "text-muted-foreground hover:text-anime-gold-light"
+                  }`}
+                >
+                  {link.label}
+                  {isActive && (
+                    <motion.div
+                      layoutId="nav-underline"
+                      className="absolute bottom-0 left-2 right-2 h-[2px] bg-gradient-to-r from-anime-gold to-anime-sky rounded-full"
+                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    />
+                  )}
+                </Link>
+              )
+            })}
           </nav>
+          </LayoutGroup>
 
           <div className="flex items-center gap-1">
             <Button variant="ghost" size="icon" onClick={onSearchOpen} className="text-muted-foreground hover:text-anime-sky hover:bg-anime-sky/10" title="搜索 (Ctrl+K)">
@@ -76,11 +85,14 @@ export function Header({ onSearchOpen }: HeaderProps) {
           {menuOpen && (
             <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="md:hidden overflow-hidden border-t border-border">
               <nav className="flex flex-col gap-1 py-4">
-                {navLinks.map((link) => (
-                  <Link key={link.path} to={link.path} className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === link.path ? "text-anime-gold bg-anime-gold/10" : "text-muted-foreground hover:text-anime-gold-light hover:bg-secondary/50"}`}>
-                    {link.label}
-                  </Link>
-                ))}
+                {navLinks.map((link) => {
+                  const isActive = link.path === "/" ? location.pathname === "/" : location.pathname.startsWith(link.path)
+                  return (
+                    <Link key={link.path} to={link.path} className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${isActive ? "text-anime-gold bg-anime-gold/10" : "text-muted-foreground hover:text-anime-gold-light hover:bg-secondary/50"}`}>
+                      {link.label}
+                    </Link>
+                  )
+                })}
               </nav>
             </motion.div>
           )}

@@ -13,6 +13,7 @@ interface PostData {
   cover?: string
   readingTime: number
   content: string
+  section: string
 }
 
 function getPostsDir(): string {
@@ -51,6 +52,7 @@ function loadAllPosts(): PostData[] {
       pinned: data.pinned === true ? true : undefined,
       readingTime: calculateReadingTime(content),
       content,
+      section: data.section || "arcane",
     })
   }
 

@@ -6,6 +6,7 @@ import { ArchivesPage } from "./pages/ArchivesPage"
 import { CategoryPage } from "./pages/CategoryPage"
 import { SearchPage } from "./pages/SearchPage"
 import { AboutPage } from "./pages/AboutPage"
+import { SectionPage } from "./pages/SectionPage"
 
 function App() {
   return (
@@ -13,6 +14,9 @@ function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />
+          <Route path="/arcane" element={<SectionPage sectionKey="arcane" />} />
+          <Route path="/journal" element={<SectionPage sectionKey="journal" />} />
+          <Route path="/forge" element={<SectionPage sectionKey="forge" />} />
           <Route path="/posts/:slug" element={<PostPage />} />
           <Route path="/archives" element={<ArchivesPage />} />
           <Route path="/categories" element={<CategoryPage />} />

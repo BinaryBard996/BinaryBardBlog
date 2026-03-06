@@ -1,4 +1,4 @@
-import type { PostMeta, Category } from "../types/blog"
+import type { PostMeta, Category, Section } from "../types/blog"
 
 export function getCategories(posts: PostMeta[]): Category[] {
   const map = new Map<string, number>()
@@ -91,4 +91,8 @@ export function groupByYear(posts: PostMeta[]): Map<string, PostMeta[]> {
     groups.set(year, group)
   }
   return groups
+}
+
+export function filterBySection(posts: PostMeta[], section: Section): PostMeta[] {
+  return posts.filter((p) => p.section === section)
 }

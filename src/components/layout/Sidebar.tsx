@@ -8,9 +8,10 @@ interface SidebarProps {
   tags: { name: string; count: number }[]
   recentPosts: PostMeta[]
   currentCategory?: string
+  basePath?: string
 }
 
-export function Sidebar({ categories, tags, recentPosts, currentCategory }: SidebarProps) {
+export function Sidebar({ categories, tags, recentPosts, currentCategory, basePath = "/archives" }: SidebarProps) {
   return (
     <aside className="space-y-6">
       <div className="glass-panel p-5 diamond-corner">
@@ -19,12 +20,12 @@ export function Sidebar({ categories, tags, recentPosts, currentCategory }: Side
           <h3 className="text-sm font-semibold text-anime-gold tracking-wider">分类</h3>
         </div>
         <div className="space-y-1">
-          <Link to="/archives" className={`flex items-center justify-between px-3 py-2 text-sm rounded-md transition-all ${!currentCategory ? "text-anime-gold bg-anime-gold/10 border-l-2 border-anime-gold" : "text-muted-foreground hover:text-anime-gold-light border-l-2 border-transparent hover:bg-secondary/40"}`}>
+          <Link to={basePath} className={`flex items-center justify-between px-3 py-2 text-sm rounded-md transition-all ${!currentCategory ? "text-anime-gold bg-anime-gold/10 border-l-2 border-anime-gold" : "text-muted-foreground hover:text-anime-gold-light border-l-2 border-transparent hover:bg-secondary/40"}`}>
             <span>全部</span>
             <span className="text-xs text-muted-foreground">{categories.reduce((a, c) => a + c.count, 0)}</span>
           </Link>
           {categories.map((cat) => (
-            <Link key={cat.name} to={`/archives?cat=${encodeURIComponent(cat.name)}`}
+            <Link key={cat.name} to={`${basePath}?cat=${encodeURIComponent(cat.name)}`}
               className={`flex items-center justify-between px-3 py-2 text-sm rounded-md transition-all ${currentCategory === cat.name ? "text-anime-gold bg-anime-gold/10 border-l-2 border-anime-gold" : "text-muted-foreground hover:text-anime-gold-light border-l-2 border-transparent hover:bg-secondary/40"}`}>
               <span>{cat.name}</span>
               <span className="text-xs text-muted-foreground">{cat.count}</span>
@@ -40,7 +41,7 @@ export function Sidebar({ categories, tags, recentPosts, currentCategory }: Side
         </div>
         <div className="flex flex-wrap gap-2">
           {tags.map((tag) => (
-            <Link key={tag.name} to={`/archives?tag=${encodeURIComponent(tag.name)}`}>
+            <Link key={tag.name} to={`${basePath}?tag=${encodeURIComponent(tag.name)}`}>
               <span className="inline-flex items-center px-2.5 py-1 text-xs text-muted-foreground rounded-full bg-secondary/60 border border-border hover:text-anime-gold hover:border-anime-gold/30 transition-all cursor-pointer">
                 #{tag.name}<span className="ml-1 opacity-50">({tag.count})</span>
               </span>

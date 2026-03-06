@@ -1,13 +1,26 @@
-import { Github, Mail, ArrowDown, Sparkles } from "lucide-react"
+import { Github, Mail, ArrowDown, Sparkles, ScrollText, Clapperboard, Hammer, ArrowRight } from "lucide-react"
+import { Link } from "react-router-dom"
 import { motion } from "framer-motion"
 import { Button } from "../components/ui/button"
-import { PostList } from "../components/blog/PostList"
-import { Sidebar } from "../components/layout/Sidebar"
 import { AnimatedPage } from "../components/common/AnimatedPage"
 import { ScrollReveal } from "../components/common/ScrollReveal"
-import { getCategories, getAllTags, sortWithPinned } from "../lib/posts"
-import { siteConfig } from "../config/site"
+import { PostCard } from "../components/blog/PostCard"
+import { sortWithPinned } from "../lib/posts"
+import { siteConfig, sections } from "../config/site"
+import { useHead } from "../hooks/useHead"
 import posts from "virtual:blog-posts"
+
+const sectionIcons: Record<string, React.ReactNode> = {
+  ScrollText: <ScrollText className="w-6 h-6" />,
+  Clapperboard: <Clapperboard className="w-6 h-6" />,
+  Hammer: <Hammer className="w-6 h-6" />,
+}
+
+const sectionColorMap: Record<string, { border: string; bg: string; text: string; glow: string }> = {
+  "anime-sky": { border: "border-anime-sky/30", bg: "bg-anime-sky/10", text: "text-anime-sky", glow: "group-hover:shadow-[0_0_20px_rgba(56,189,248,0.15)]" },
+  "anime-lavender": { border: "border-anime-lavender/30", bg: "bg-anime-lavender/10", text: "text-anime-lavender", glow: "group-hover:shadow-[0_0_20px_rgba(167,139,250,0.15)]" },
+  "anime-gold": { border: "border-anime-gold/30", bg: "bg-anime-gold/10", text: "text-anime-gold", glow: "group-hover:shadow-[0_0_20px_rgba(234,179,8,0.15)]" },
+}
 
 const particleVariants = {
   animate: (i: number) => ({
@@ -22,9 +35,17 @@ const particleVariants = {
 }
 
 export function HomePage() {
-  const categories = getCategories(posts)
-  const tags = getAllTags(posts)
   const sortedPosts = sortWithPinned(posts)
+  const recentPosts = sortedPosts.slice(0, 3)
+
+  useHead({
+    title: "首页",
+    description: siteConfig.description,
+    ogTitle: siteConfig.title,
+    ogDescription: siteConfig.description,
+    ogType: "website",
+    canonicalUrl: siteConfig.url,
+  })
 
   return (
     <AnimatedPage>
@@ -71,15 +92,16 @@ export function HomePage() {
                 <span className="text-xs tracking-wider font-medium">Game Developer & Creator</span>
               </div>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight font-heading">
-                <span className="text-foreground">Hi, 我是</span>{" "}
+                <span className="text-foreground">此处记录着一位名为</span>{" "}
                 <span className="bg-gradient-to-r from-anime-gold via-anime-gold-light to-anime-sky bg-clip-text text-transparent">
                   BinaryBard
                 </span>
+                <span className="text-foreground">的持键小子</span>
               </h1>
               <p className="text-lg text-muted-foreground max-w-lg leading-relaxed">
-                热爱游戏开发的创作者。这里记录我在{" "}
-                <span className="text-anime-sky">Unreal Engine</span>{" "}
-                与软件工程旅途中的思考与实践。
+                据说精通{" "}
+                <span className="text-anime-sky">虚幻引擎</span>{" "}
+                的奥术，擅长将混沌的需求炼成可运行的秩序。曾在蓝图的迷宫中迷路三天，靠一壶咖啡和 printf 活着走了出来。现记录旅途见闻于此。
               </p>
               <div className="flex items-center gap-4 justify-center lg:justify-start">
                 <a href={siteConfig.github} target="_blank" rel="noopener noreferrer">
@@ -153,37 +175,80 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* Content Section */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+      {/* Sections Entrance */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
         <ScrollReveal>
-          <div className="flex flex-col lg:flex-row gap-8">
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-3">
-                  <div className="w-1 h-6 bg-gradient-to-b from-anime-gold to-anime-gold-dark rounded-full" />
-                  <h2 className="text-2xl font-bold text-foreground font-heading">
-                    最新文章
-                  </h2>
-                </div>
-                <span className="text-xs text-anime-gold/60 tracking-wider">
-                  {posts.length} 篇文章
-                </span>
-              </div>
-              <PostList posts={sortedPosts} />
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 border border-border bg-secondary/30 text-muted-foreground text-sm rounded-full mb-4">
+              <span className="text-xs tracking-wider font-medium">三座殿堂，各有所藏</span>
             </div>
+          </div>
 
-            <div className="lg:w-80 flex-shrink-0">
-              <div className="lg:sticky lg:top-20">
-                <Sidebar
-                  categories={categories}
-                  tags={tags}
-                  recentPosts={posts}
-                />
-              </div>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {sections.map((sec, i) => {
+              const colors = sectionColorMap[sec.color]
+              const sectionPosts = posts.filter((p: any) => p.section === sec.key)
+              return (
+                <motion.div
+                  key={sec.key}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 + i * 0.1 }}
+                >
+                  <Link to={sec.path} className="group block">
+                    <div className={`glass-panel p-6 rounded-xl transition-all duration-300 hover:-translate-y-1 ${colors.glow} border ${colors.border} hover:${colors.border}`}>
+                      <div className={`w-12 h-12 rounded-lg ${colors.bg} flex items-center justify-center mb-4 ${colors.text}`}>
+                        {sectionIcons[sec.icon]}
+                      </div>
+                      <h3 className={`text-xl font-bold ${colors.text} mb-1 font-heading`}>
+                        {sec.title}
+                      </h3>
+                      <p className="text-xs text-muted-foreground tracking-wider mb-3">
+                        {sec.subtitle}
+                      </p>
+                      <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                        {sec.description}
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-muted-foreground">
+                          {sectionPosts.length} 篇文章
+                        </span>
+                        <span className={`text-xs ${colors.text} flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity font-medium`}>
+                          进入 <ArrowRight className="w-3 h-3" />
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                </motion.div>
+              )
+            })}
           </div>
         </ScrollReveal>
       </section>
+
+      {/* Recent Posts */}
+      {recentPosts.length > 0 && (
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 pb-16">
+          <ScrollReveal>
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-1 h-6 bg-gradient-to-b from-anime-gold to-anime-gold-dark rounded-full" />
+                <h2 className="text-2xl font-bold text-foreground font-heading">
+                  最近更新
+                </h2>
+              </div>
+              <span className="text-xs text-anime-gold/60 tracking-wider">
+                {posts.length} 篇文章
+              </span>
+            </div>
+            <div className="space-y-4">
+              {recentPosts.map((post: any, i: number) => (
+                <PostCard key={post.slug} post={post} index={i} />
+              ))}
+            </div>
+          </ScrollReveal>
+        </section>
+      )}
     </AnimatedPage>
   )
 }

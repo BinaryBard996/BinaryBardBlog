@@ -1,3 +1,13 @@
+export interface SectionConfig {
+  key: string
+  title: string
+  subtitle: string
+  description: string
+  icon: string
+  color: string
+  path: string
+}
+
 export interface SiteConfig {
   title: string
   description: string
@@ -54,8 +64,40 @@ export const siteConfig: SiteConfig = {
 
 export const navLinks: NavLink[] = [
   { path: "/", label: "首页" },
-  { path: "/archives", label: "归档" },
+  { path: "/arcane", label: "技术奥术" },
+  { path: "/journal", label: "光影手札" },
+  { path: "/forge", label: "锻造日志" },
   { path: "/about", label: "关于" },
+]
+
+export const sections: SectionConfig[] = [
+  {
+    key: "arcane",
+    title: "技术奥术",
+    subtitle: "Arcane Arts",
+    description: "探究引擎深处的奥秘，将技术心得炼成可传承的卷轴",
+    icon: "ScrollText",
+    color: "anime-sky",
+    path: "/arcane",
+  },
+  {
+    key: "journal",
+    title: "光影手札",
+    subtitle: "Shadow & Light",
+    description: "游戏、电影、书籍——记录每一次与好故事相遇的余震",
+    icon: "Clapperboard",
+    color: "anime-lavender",
+    path: "/journal",
+  },
+  {
+    key: "forge",
+    title: "锻造日志",
+    subtitle: "The Forge",
+    description: "个人项目的开发纪实，从第一行代码到最终成品的全过程",
+    icon: "Hammer",
+    color: "anime-gold",
+    path: "/forge",
+  },
 ]
 
 export const socialLinks: SocialLink[] = [

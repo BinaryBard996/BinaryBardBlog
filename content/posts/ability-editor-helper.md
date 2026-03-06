@@ -5,6 +5,7 @@ date: "2026-03-04"
 category: "Unreal Engine"
 tags: ["UE", "GAS", "GameplayEffect", "插件开发", "自动化工具", "Excel"]
 cover: "/images/ability-editor-helper/cover.jpg"
+section: "arcane"
 ---
 
 ## 一、引言

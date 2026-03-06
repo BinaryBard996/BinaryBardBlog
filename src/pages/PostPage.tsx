@@ -11,6 +11,8 @@ import { AnimatedPage } from "../components/common/AnimatedPage"
 import { extractTOC } from "../lib/toc"
 import { getRelatedPosts } from "../lib/posts"
 import { formatDate } from "../lib/utils"
+import { useHead } from "../hooks/useHead"
+import { siteConfig } from "../config/site"
 import type { BlogPost } from "../types/blog"
 import allPosts from "virtual:blog-posts"
 import allPostsFull from "virtual:blog-posts-full"
@@ -18,6 +20,33 @@ import allPostsFull from "virtual:blog-posts-full"
 export function PostPage() {
   const { slug } = useParams<{ slug: string }>()
   const post: BlogPost | null = slug ? allPostsFull[slug] ?? null : null
+
+  const postUrl = post ? `${siteConfig.url}/posts/${post.slug}` : ""
+  const coverUrl = post?.cover ? `${siteConfig.url}${post.cover}` : ""
+
+  useHead({
+    title: post?.title,
+    description: post?.description,
+    ogTitle: post?.title,
+    ogDescription: post?.description,
+    ogImage: coverUrl || undefined,
+    ogType: "article",
+    canonicalUrl: postUrl || undefined,
+    jsonLd: post
+      ? {
+          "@context": "https://schema.org",
+          "@type": "BlogPosting",
+          headline: post.title,
+          description: post.description,
+          datePublished: post.date,
+          author: { "@type": "Person", name: siteConfig.author },
+          publisher: { "@type": "Organization", name: siteConfig.title },
+          mainEntityOfPage: { "@type": "WebPage", "@id": postUrl },
+          ...(coverUrl ? { image: coverUrl } : {}),
+          keywords: post.tags.join(", "),
+        }
+      : undefined,
+  })
 
   useEffect(() => {
     window.scrollTo(0, 0)

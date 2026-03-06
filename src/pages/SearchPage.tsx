@@ -4,9 +4,14 @@ import { motion } from "framer-motion"
 import { Search, FileText, ArrowRight } from "lucide-react"
 import { AnimatedPage } from "../components/common/AnimatedPage"
 import { loadSearchIndex, search, highlightText } from "../lib/search"
+import { useHead } from "../hooks/useHead"
 import type { SearchResult } from "../types/blog"
 
 export function SearchPage() {
+  useHead({
+    title: "搜索",
+    description: "搜索 BinaryBard 博客的所有文章",
+  })
   const [searchParams, setSearchParams] = useSearchParams()
   const initialQuery = searchParams.get("q") || ""
   const [query, setQuery] = useState(initialQuery)

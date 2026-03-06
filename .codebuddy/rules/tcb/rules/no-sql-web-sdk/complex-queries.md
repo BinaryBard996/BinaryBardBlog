@@ -1,3 +1,7 @@
+---
+# Please note: Do not modify the header of this document. If modified, CodeBuddy (Internal Edition) will apply the default logic settings.
+type: always
+---
 # Complex Queries with CloudBase
 
 This document provides detailed guidance on constructing complex queries using CloudBase document database.
