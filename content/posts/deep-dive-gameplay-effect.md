@@ -4,6 +4,7 @@ description: "深入解析 UE GAS 中 GameplayEffect 的核心实现机制，包
 date: "2026-03-06"
 category: "Unreal Engine"
 tags: ["UE", "GAS", "GameplayEffect", "Attribute", "预测", "Stack", "GE Component"]
+cover: "/images/deep-dive-gameplay-effect-cover.jpg"
 section: "arcane"
 ---
 
