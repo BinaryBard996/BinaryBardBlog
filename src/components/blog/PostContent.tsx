@@ -4,6 +4,7 @@ import remarkGfm from "remark-gfm"
 import rehypeHighlight from "rehype-highlight"
 import rehypeSlug from "rehype-slug"
 import { CodeBlock } from "./CodeBlock"
+import { MermaidBlock } from "./MermaidBlock"
 import { GitHubRepoCard } from "./GitHubRepoCard"
 import { ImageLightbox } from "../common/ImageLightbox"
 import "highlight.js/styles/atom-one-dark.css"
@@ -31,6 +32,11 @@ export function PostContent({ content }: PostContentProps) {
             const el = children as React.ReactElement
             if (el && typeof el === "object" && "props" in el) {
               const cp = el.props as { className?: string; children?: React.ReactNode }
+              const isMermaid = cp.className?.includes("language-mermaid")
+              if (isMermaid) {
+                const code = typeof cp.children === "string" ? cp.children : ""
+                return <MermaidBlock code={code} />
+              }
               return <CodeBlock className={cp.className || ""}>{cp.children}</CodeBlock>
             }
             return <pre {...props}>{children}</pre>
