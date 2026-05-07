@@ -57,7 +57,7 @@ export const siteConfig: SiteConfig = {
   author: "BinaryBard",
   url: "https://binary-bard-blog-8fvf1sg82895f0b-1404499502.tcloudbaseapp.com",
   github: "https://github.com/BinaryBard996",
-  email: "hello@binarybard.dev",
+  email: "1194336281@qq.com",
   avatar: "/images/hero-banner.jpg",
   motto: "用代码构建虚拟世界",
 }
@@ -102,7 +102,8 @@ export const sections: SectionConfig[] = [
 
 export const socialLinks: SocialLink[] = [
   { icon: "Github", href: "https://github.com/BinaryBard996", label: "GitHub" },
-  { icon: "Mail", href: "mailto:hello@binarybard.dev", label: "Email" },
+  { icon: "Zhihu", href: "https://www.zhihu.com/people/gao-gui-chun-he-zi", label: "知乎" },
+  { icon: "Mail", href: "mailto:1194336281@qq.com", label: "Email" },
   { icon: "Rss", href: "/rss.xml", label: "RSS" },
 ]
 

@@ -1,6 +1,6 @@
 import { motion, useInView } from "framer-motion"
 import { useRef } from "react"
-import { Github, Mail, Globe, Gamepad2, Server, Wrench, Sparkles } from "lucide-react"
+import { Github, Mail, Globe, Gamepad2, Server, Wrench, Sparkles, MessageCircle, BookOpen } from "lucide-react"
 import { Button } from "../components/ui/button"
 import { AnimatedPage } from "../components/common/AnimatedPage"
 import { ScrollReveal } from "../components/common/ScrollReveal"
@@ -77,7 +77,7 @@ export function AboutPage() {
               <div className="flex items-center gap-3 justify-center sm:justify-start">
                 {socialLinks.map(({ icon, href, label }) => {
                   const iconMap: Record<string, typeof Github> = {
-                    Github, Mail, Globe,
+                    Github, Mail, Globe, Zhihu: BookOpen,
                   }
                   const IconComp = iconMap[icon] || Globe
                   return (
@@ -97,6 +97,84 @@ export function AboutPage() {
             </div>
           </div>
         </ScrollReveal>
+
+        {/* Contact & About Me */}
+        <section className="mb-16">
+          <ScrollReveal>
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-1 h-6 bg-gradient-to-b from-anime-emerald to-anime-sky rounded-full" />
+              <h2 className="text-2xl font-bold text-foreground font-heading">关于我</h2>
+            </div>
+          </ScrollReveal>
+          <ScrollReveal delay={0.1}>
+            <div className="glass-panel rounded-xl p-6 space-y-6">
+              <div className="space-y-3">
+                <p className="text-muted-foreground leading-relaxed">
+                  你好！我是 BinaryBard，一名游戏开发者和工具创作者。我热衷于使用 Unreal Engine 构建游戏体验，
+                  并且喜欢研究 Gameplay Ability System（GAS）框架来打造灵活强大的游戏系统。
+                </p>
+                <p className="text-muted-foreground leading-relaxed">
+                  工作之余，我会将开发中的经验与思考整理成文章分享出来，希望能帮助到同样在游戏开发道路上探索的朋友们。
+                  如果你对我的文章或项目有任何想法，欢迎通过以下方式联系我！
+                </p>
+              </div>
+              <div className="border-t border-border pt-5">
+                <h3 className="text-sm font-bold text-foreground mb-4 uppercase tracking-wider">联系方式</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <a
+                    href="https://www.zhihu.com/people/gao-gui-chun-he-zi"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 p-3 rounded-lg bg-secondary/30 border border-border hover:border-anime-gold/30 hover:bg-secondary/50 transition-all group"
+                  >
+                    <div className="w-9 h-9 rounded-lg bg-[#0066FF]/10 flex items-center justify-center flex-shrink-0">
+                      <BookOpen className="w-4 h-4 text-[#0066FF]" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-foreground group-hover:text-anime-gold transition-colors">知乎</p>
+                      <p className="text-xs text-muted-foreground">@gao-gui-chun-he-zi</p>
+                    </div>
+                  </a>
+                  <div className="flex items-center gap-3 p-3 rounded-lg bg-secondary/30 border border-border">
+                    <div className="w-9 h-9 rounded-lg bg-anime-sky/10 flex items-center justify-center flex-shrink-0">
+                      <MessageCircle className="w-4 h-4 text-anime-sky" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-foreground">QQ</p>
+                      <p className="text-xs text-muted-foreground">1194336281</p>
+                    </div>
+                  </div>
+                  <a
+                    href="mailto:1194336281@qq.com"
+                    className="flex items-center gap-3 p-3 rounded-lg bg-secondary/30 border border-border hover:border-anime-gold/30 hover:bg-secondary/50 transition-all group"
+                  >
+                    <div className="w-9 h-9 rounded-lg bg-anime-gold/10 flex items-center justify-center flex-shrink-0">
+                      <Mail className="w-4 h-4 text-anime-gold" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-foreground group-hover:text-anime-gold transition-colors">邮箱</p>
+                      <p className="text-xs text-muted-foreground">1194336281@qq.com</p>
+                    </div>
+                  </a>
+                  <a
+                    href="https://github.com/BinaryBard996"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 p-3 rounded-lg bg-secondary/30 border border-border hover:border-anime-gold/30 hover:bg-secondary/50 transition-all group"
+                  >
+                    <div className="w-9 h-9 rounded-lg bg-foreground/10 flex items-center justify-center flex-shrink-0">
+                      <Github className="w-4 h-4 text-foreground" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-foreground group-hover:text-anime-gold transition-colors">GitHub</p>
+                      <p className="text-xs text-muted-foreground">@BinaryBard996</p>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </ScrollReveal>
+        </section>
 
         {/* Skills */}
         <section className="mb-16">

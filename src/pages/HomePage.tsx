@@ -110,12 +110,12 @@ export function HomePage() {
                     GitHub
                   </Button>
                 </a>
-                <a href={`mailto:${siteConfig.email}`}>
+                <Link to="/about">
                   <Button variant="outline" className="border-anime-gold/30 text-foreground hover:bg-anime-gold/10 hover:border-anime-gold/50 hover:text-anime-gold gap-2 cursor-pointer bg-transparent backdrop-blur-sm rounded-lg">
                     <Mail className="w-4 h-4" />
                     联系我
                   </Button>
-                </a>
+                </Link>
               </div>
             </motion.div>
 
