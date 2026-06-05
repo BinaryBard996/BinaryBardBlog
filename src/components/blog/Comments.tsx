@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react"
 
 const GISCUS_REPO = "BinaryBard996/BinaryBardBlog"
-const GISCUS_REPO_ID = ""
+const GISCUS_REPO_ID = "R_kgDORPtmGQ"
 const GISCUS_CATEGORY = "Announcements"
-const GISCUS_CATEGORY_ID = ""
+const GISCUS_CATEGORY_ID = "DIC_kwDORPtmGc4C-jMd"
 const isConfigured = GISCUS_REPO_ID !== "" && GISCUS_CATEGORY_ID !== ""
 
 export function Comments({ slug }: { slug: string }) {
@@ -22,7 +22,7 @@ export function Comments({ slug }: { slug: string }) {
     s.setAttribute("data-strict", "0")
     s.setAttribute("data-reactions-enabled", "1")
     s.setAttribute("data-emit-metadata", "0")
-    s.setAttribute("data-input-position", "top")
+    s.setAttribute("data-input-position", "bottom")
     s.setAttribute("data-theme", document.documentElement.classList.contains("dark") ? "dark_dimmed" : "light")
     s.setAttribute("data-lang", "zh-CN")
     s.setAttribute("data-loading", "lazy")
